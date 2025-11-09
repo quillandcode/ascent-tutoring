@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ascent Tutoring with Mr. Rob</title>
+    <style>
+        /* Import Professional Fonts from Google */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Nunito+Sans:wght@400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* New Fonts: 
+              - 'Nunito Sans' is a clean, modern, and very readable body font.
+              - 'Poppins' is a professional and friendly heading font.
+            */
+            font-family: 'Nunito Sans', sans-serif;
+            font-weight: 400;
+            
+            /* A subtle gradient adds depth that a flat color lacks */
+            background: linear-gradient(170deg, #0d1321 0%, #121a2c 100%);
+            color: #e8eef5;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        /* Apply the heading font to all headings for consistency 
+        */
+        h1, h2, h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: #e8eef5; /* Default to white for hierarchy */
+        }
+
+        #star-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .floating-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(13, 19, 33, 0.75); /* Match new background */
+            backdrop-filter: blur(12px);
+            padding: 15px 40px;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* More subtle border */
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .floating-header input {
+            padding: 8px 15px;
+            font-size: 0.95em;
+            font-family: 'Nunito Sans', sans-serif;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.3);
+            color: #e8eef5;
+            width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .floating-header input:focus {
+            outline: none;
+            border-color: #0BDA51;
+            box-shadow: 0 0 10px rgba(11, 218, 81, 0.3);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .floating-header input::placeholder {
+            color: #6c7a89;
+        }
+
+        .floating-header button {
+            padding: 8px 20px;
+            font-size: 0.95em;
+            background: #0BDA51;
+            color: #0d1321;
+            border: none;
+            border-radius: 5px;
+            /* Use the professional heading font */
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .floating-header button:hover {
+            background: #0ac045;
+            transform: translateY(-1px);
+            box-shadow: 0 3px 15px rgba(11, 218, 81, 0.4);
+        }
+
+        .floating-header .error-message-mini {
+            color: #ff6b6b;
+            font-size: 0.85em;
+            position: absolute;
+            right: 40px;
+            bottom: -25px;
+            display: none;
+        }
+
+        .floating-header .error-message-mini.show {
+            display: block;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            /* Added more padding for breathing room */
+            padding: 80px 40px; 
+            position: relative;
+            z-index: 1;
+        }
+
+        /* This is a new "Card" base style.
+          We apply shared styles (like background, border, shadow) to all 
+          the main content blocks for consistency.
+        */
+        .card {
+            background: rgba(26, 38, 56, 0.5); /* Lighter, bluer glass */
+            backdrop-filter: blur(10px);
+            border-radius: 12px; /* Softer radius */
+            padding: 40px;
+            margin-bottom: 50px;
+            /* A subtle border really helps define the "glass" edge */
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+
+        .header {
+            /* Use the new .card base style */
+            background: none;
+            backdrop-filter: none;
+            border: none;
+            box-shadow: none;
+            padding: 0; /* Remove padding, let .container handle it */
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .logo-section {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-section img {
+            height: 80px;
+            width: auto;
+        }
+
+        .header h1 {
+            font-size: 3.2em;
+            color: #0BDA51; /* Keep the main brand color here */
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-weight: 700;
+            letter-spacing: -1px; /* Tightens up the heading */
+        }
+
+        .tagline {
+            font-size: 1.3em;
+            color: #a8b8d8;
+            font-style: italic;
+            font-weight: 600; /* Use the semi-bold body font */
+        }
+
+        /* Apply .card style to the intro section */
+        .intro-section {
+            background: rgba(26, 38, 56, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            
+            /* The green border-left is good, let's keep it */
+            border-left: 5px solid #0BDA51;
+        }
+
+
+        .intro-section h2 {
+            /* COLOR HIERARCHY:
+              We use white for section headers, reserving the bright
+              green for the *main* page title and key highlights.
+            */
+            color: #e8eef5; 
+            font-size: 2.2em;
+            margin-bottom: 25px;
+        }
+
+        .intro-section p {
+            font-size: 1.15em;
+            line-height: 1.8;
+            color: #d4dce8;
+            margin-bottom: 20px;
+        }
+
+        .ladder-metaphor {
+            background: rgba(11, 218, 81, 0.05); /* Softer background */
+            border: 1px solid rgba(11, 218, 81, 0.4);
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .ladder-metaphor h3 {
+            color: #0BDA51; /* This is a good place for the accent color */
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Apply .card style to the portal section */
+        .portal-section {
+            background: rgba(26, 38, 56, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            margin: 0 auto;
+            border-top: 5px solid #0BDA51; /* Use the color in a new way */
+        }
+
+        .portal-section h2 {
+            color: #e8eef5; /* Use white, not green */
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .portal-description {
+            text-align: center;
+            color: #a8b8d8;
+            margin-bottom: 20px;
+            font-size: 1.05em;
+            line-height: 1.7;
+        }
+
+        .portal-note {
+            text-align: center;
+            color: #6c7a89;
+            font-size: 0.9em;
+            font-style: italic;
+            margin-top: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c7a89;
+            font-size: 0.95em;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+            }
+
+            .floating-header {
+                padding: 12px 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .floating-header input {
+                width: 150px;
+                font-size: 0.9em;
+                padding: 6px 12px;
+            }
+
+            .floating-header button {
+                padding: 6px 16px;
+                font-size: 0.9em;
+            }
+
+            .floating-header .error-message-mini {
+                right: 20px;
+                bottom: -20px;
+                font-size: 0.8em;
+            }
+
+            .container {
+                padding: 40px 20px;
+            }
+
+            .header h1 {
+                font-size: 2.2em;
+            }
+
+            .intro-section h2, .portal-section h2 {
+                font-size: 1.8em;
+            }
+
+            .card, .intro-section, .portal-section {
+                padding: 30px 20px;
+            }
+
+            .logo-section img {
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="star-canvas"></canvas>
+
+    <div class="floating-header">
+        <input 
+            type="password" 
+            id="headerPasscode" 
+            placeholder="Access Code"
+            onkeypress="if(event.key === 'Enter') handleHeaderPasscode()"
+        >
+        <button onclick="handleHeaderPasscode()">Login</button>
+        <div class="error-message-mini" id="headerError">Invalid code</div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo-section">
+                <img src="assets/images/qclogo3.png" alt="Quill and Code Logo">
+            </div>
+            <h1>Ascent Tutoring with Mr. Rob</h1>
+            <div class="tagline">One rung at a time, we climb toward understanding</div>
+        </div>
+
+        <div class="intro-section">
+            <h2>Welcome to Ascent Tutoring</h2>
+            <p>Learning something new can feel like staring up at a tall ladder—overwhelming, maybe even a little intimidating. But here's the thing: you don't climb a ladder all at once. You take it one rung at a time.</p>
+            
+            <p>That's exactly how my tutoring sessions work. We start with the foundation—the first rung—and make sure it's solid before we move up. Each concept builds naturally on the last. No rushing, no skipping steps, no shaky footing. By the time we reach the top, what seemed complicated at the start suddenly feels clear and manageable.</p>
+
+            <div class="ladder-metaphor">
+                <h3>🪜 The Skill Ladder Method</h3>
+                <p>Every session is designed like a ladder. Each rung represents a key skill or concept that supports the next one. We practice, we reinforce, we make sure you're confident before climbing higher. And when you finally reach the summit? The view is crystal clear—you've got it.</p>
+            </div>
+
+            <p style="margin-top: 30px;">Whether it's math, computer science, or problem-solving strategies, we'll build the path together. One solid step at a time.</p>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Quill and Code | Ascent Tutoring with Mr. Rob</p>
+        </footer>
+    </div>
+
+    <script>
+        // Passcode system for floating header
+        const passcodes = {
+            'pj2025': 'students/pj/index.html',
+        };
+
+        function handleHeaderPasscode() {
+            const passcode = document.getElementById('headerPasscode').value.toLowerCase().trim();
+            const errorMessage = document.getElementById('headerError');
+
+            if (passcodes[passcode]) {
+                // Redirect to student page
+                window.location.href = passcodes[passcode];
+            } else {
+                // Show error
+                errorMessage.classList.add('show');
+                document.getElementById('headerPasscode').value = '';
+                
+                // Hide error after 3 seconds
+                setTimeout(() => {
+                    errorMessage.classList.remove('show');
+                }, 3000);
+            }
+        }
+
+        // --- New Particle System ---
+        try {
+            const canvas = document.getElementById('star-canvas');
+            const ctx = canvas.getContext('2d');
+
+            if (!ctx) {
+                throw new Error('Canvas context not available');
+            }
+
+            function initCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            initCanvas();
+
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(initCanvas, 250);
+            });
+
+            // Detect mobile for particle count
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const particleCount = isMobile ? 75 : 200;
+            let particles = [];
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 1.5 + 0.5; // Tiny pin pricks
+                    this.speedX = (Math.random() * 0.4) - 0.2; // Slow drift
+                    this.speedY = (Math.random() * 0.4) - 0.2; // Slow drift
+                    this.color = this.setColor();
+                }
+
+                setColor() {
+                    const rand = Math.random();
+                    if (rand < 0.1) {
+                        // 10% chance for Red
+                        return 'rgba(255, 50, 50, 0.8)'; 
+                    } else if (rand < 0.2) {
+                        // 10% chance for White
+                        return 'rgba(255, 255, 255, 0.8)';
+                    } else {
+                        // 80% chance for Malachite Green
+                        return 'rgba(11, 218, 81, 0.7)'; 
+                    }
+                }
+
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+
+                    // Wrap particles around the screen
+                    if (this.x < 0) this.x = canvas.width;
+                    if (this.x > canvas.width) this.x = 0;
+                    if (this.y < 0) this.y = canvas.height;
+                    if (this.y > canvas.height) this.y = 0;
+                }
+
+                draw() {
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            function initParticles() {
+                particles = [];
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push(new Particle());
+                }
+            }
+            initParticles();
+
+            // Re-init particles on resize to prevent clumping
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    initCanvas();
+                    initParticles(); 
+                }, 250);
+            });
+
+            function animate() {
+                // Clear canvas each frame for "no trail"
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                particles.forEach(particle => {
+                    particle.update();
+                    particle.draw();
+                });
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+
+        } catch (error) {
+            console.error('Star particle system error:', error);
+            // Page will still work without particles
+        }
+    </script>
+</body>
+</html>

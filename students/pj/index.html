@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PJ's Tutoring Sessions</title>
+    <style>
+        /* Import Professional Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Nunito+Sans:wght@400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* Kept new fonts */
+            font-family: 'Nunito Sans', sans-serif;
+            /* Restored original background */
+            background: linear-gradient(to bottom, #0a1128 0%, #1a2847 50%, #2d3e5f 100%);
+            color: #e8eef5;
+            
+            /* Kept new Flex Layout */
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden; 
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .student-header {
+            /* Kept new glass style */
+            background: rgba(13, 19, 33, 0.75);
+            backdrop-filter: blur(12px);
+            padding: 20px 40px;
+            /* Restored original color border */
+            border-bottom: 3px solid #e67e22;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            flex-shrink: 0;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .left-section {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .student-info {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .student-name {
+            font-size: 2em;
+            /* Restored original color */
+            color: #e67e22;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .student-details {
+            display: flex;
+            gap: 20px;
+            font-size: 1.1em;
+            color: #a8b8d8;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .detail-label {
+            /* Restored original color */
+            color: #4a9eff;
+            font-weight: 600;
+        }
+
+        .session-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .session-selector label {
+            /* Restored original color */
+            color: #4a9eff;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .session-selector select {
+            padding: 10px 15px;
+            font-size: 1em;
+            /* Kept new font */
+            font-family: 'Nunito Sans', sans-serif;
+            /* Restored original border */
+            border: 2px solid #e67e22;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #e8eef5;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+
+        .session-selector select:hover {
+            /* Restored original color */
+            border-color: #f4a261;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .session-selector select:focus {
+            outline: none;
+            /* Restored original color */
+            border-color: #e67e22;
+            box-shadow: 0 0 15px rgba(230, 126, 34, 0.3);
+        }
+
+        .session-container {
+            /* Kept new flex layout */
+            flex-grow: 1;
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+        }
+
+        .home-link {
+            padding: 10px 20px;
+            /* Restored original color */
+            background: #4a9eff;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            /* Kept new font */
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            border: 2px solid transparent;
+        }
+
+        .home-link:hover {
+            /* Restored original colors */
+            background: #e67e22;
+            border-color: #f4a261;
+            box-shadow: 0 3px 15px rgba(230, 126, 34, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                height: 100%; 
+                overflow: auto;
+            }
+            .student-header {
+                padding: 15px 20px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .student-name {
+                font-size: 1.5em;
+            }
+
+            .student-details {
+                flex-direction: column;
+                gap: 10px;
+                font-size: 1em;
+            }
+
+            .session-selector {
+                width: 100%;
+            }
+
+            .session-selector select {
+                flex: 1;
+                min-width: unset;
+            }
+
+            .session-container {
+                height: 100vh;
+            }
+
+            .home-link {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+
+            .left-section {
+                width: 100%;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="student-header">
+        <div class="header-content">
+            <div class="left-section">
+                <a href="../../index.html" class="home-link">
+                    <span>←</span>
+                    <span>Home</span>
+                </a>
+                <div class="student-info">
+                    <div class="student-name">PJ</div>
+                    <div class="student-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Grade:</span>
+                            <span>7th</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Subject:</span>
+                            <span>Mathematics</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="session-selector">
+                <label for="sessionSelect">Session:</label>
+                <select id="sessionSelect" onchange="loadSession()">
+                    <option value="sessions/2025-10-05.html">October 5, 2025 (Latest)</option>
+                    <!-- Add more sessions here as they're created -->
+                    <!-- <option value="sessions/2025-10-12.html">October 12, 2025</option> -->
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <iframe 
+        id="sessionFrame" 
+        class="session-container"
+        src="sessions/2025-10-05.html"
+        title="Tutoring Session"
+    ></iframe>
+
+    <script>
+        function loadSession() {
+            const select = document.getElementById('sessionSelect');
+            const iframe = document.getElementById('sessionFrame');
+            iframe.src = select.value;
+        }
+
+        // Ensure the iframe loads properly
+        window.addEventListener('load', () => {
+            const iframe = document.getElementById('sessionFrame');
+            iframe.addEventListener('error', () => {
+                console.error('Failed to load session');
+            });
+        });
+    </script>
+</body>
+</html>

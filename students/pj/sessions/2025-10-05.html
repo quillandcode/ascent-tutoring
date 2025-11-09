@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PJ's Skill Ladder Session</title>
+    <style>
+        /* Import Professional Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Nunito+Sans:wght@400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* Kept new font */
+            font-family: 'Nunito Sans', sans-serif;
+            /* Restored original background */
+            background: linear-gradient(to bottom, #0a1128 0%, #1a2847 50%, #2d3e5f 100%);
+            color: #e8eef5;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3 {
+            /* Kept new font */
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            /* Restored original color */
+            background: rgba(230, 126, 34, 0.9); 
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover {
+            /* Restored original color */
+            background: rgba(230, 126, 34, 1);
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px rgba(230, 126, 34, 0.4);
+        }
+
+        .section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            /* Restored original color */
+            color: #f4a261;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header .date {
+            font-size: 1.2em;
+            color: #a8b8d8;
+        }
+
+        /* Kept new glass card base */
+        .card {
+            background: rgba(26, 38, 56, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 35px;
+            margin: 30px 0;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            /* Restored original border */
+            border-left: 5px solid #e67e22; 
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px); 
+            /* Restored original shadow */
+            box-shadow: 0 12px 40px rgba(230, 126, 34, 0.2);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 2em;
+            /* Restored original color */
+            color: #f4a261;
+            margin-bottom: 25px;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .emoji {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .card-content {
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .card-content p {
+            margin-bottom: 15px;
+        }
+
+        .ladder-section {
+            position: relative;
+            padding-left: 60px;
+        }
+
+        .ladder-line {
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            /* Restored original color */
+            background: linear-gradient(to bottom, #e67e22, #f4a261);
+        }
+
+        .ladder-rung {
+            position: relative;
+            margin: 40px 0;
+        }
+
+        .ladder-rung::before {
+            content: '';
+            position: absolute;
+            left: -52px;
+            top: 15px;
+            width: 35px;
+            height: 4px;
+            /* Restored original color */
+            background: #f4a261;
+        }
+
+        .rung-number {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            /* Restored original color */
+            background: #e67e22;
+            color: white; 
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            position: absolute;
+            left: -60px;
+            top: 5px;
+        }
+
+        .rung-title {
+            font-size: 1.5em;
+            /* Restored original color */
+            color: #f4a261;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .rung-content {
+            color: #d4dce8;
+            font-size: 1.05em;
+            line-height: 1.7;
+        }
+
+        .strength-item,
+        .focus-item {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            /* Restored original color */
+            border-left: 3px solid #4a9eff;
+        }
+
+        .strength-item h3,
+        .focus-item h3 {
+            /* Restored original color */
+            color: #4a9eff;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .focus-item {
+            /* Kept yellow border for distinction */
+            border-left-color: #ffd60a; 
+        }
+
+        .focus-item h3 {
+            /* Kept yellow text for distinction */
+            color: #ffd60a;
+        }
+
+        .quote-box {
+            /* Restored original colors */
+            background: rgba(230, 126, 34, 0.1);
+            border-left: 4px solid #e67e22;
+            padding: 20px;
+            margin: 20px 0;
+            font-style: italic;
+            border-radius: 5px;
+        }
+
+        .challenge-box {
+            /* Restored original colors */
+            background: linear-gradient(135deg, rgba(74, 158, 255, 0.1), rgba(244, 162, 97, 0.1));
+            border: 2px solid #4a9eff;
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .challenge-box h3 {
+            /* Restored original color */
+            color: #4a9eff;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .challenge-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .challenge-box li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .challenge-box li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            /* Restored original color */
+            color: #f4a261;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .nav-buttons {
+                right: 15px;
+            }
+
+            .nav-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="nav-buttons">
+        <button class="nav-btn" onclick="scrollToSection('up')" aria-label="Scroll Up">↑</button>
+        <button class="nav-btn" onclick="scrollToSection('down')" aria-label="Scroll Down">↓</button>
+    </div>
+
+    <div class="container">
+        <!-- Header Section -->
+        <div class="section visible" id="section-header">
+            <div class="header">
+                <h1>PJ's Skill Ladder Session</h1>
+                <div class="date">Tutoring Session Report</div>
+            </div>
+        </div>
+
+        <!-- Overview Section -->
+        <div class="section" id="section-overview">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">🧩</span>
+                    <span>Session Overview</span>
+                </div>
+                <div class="card-content">
+                    <p>We started today's session with a mental math warm-up, setting the tone for focus and quick
+                        thinking. PJ jumped right in, showing impressive recall and accuracy—he completed a mixed set of
+                        operations in just <strong>1 minute and 25 seconds</strong>, a clear improvement from previous
+                        sessions!</p>
+                    <p>From there, we launched into what I call a <strong>"Skill Ladder"</strong> lesson—a step-by-step
+                        build-up toward mastering addition and subtraction with rational numbers. Each rung of the
+                        ladder strengthened a key concept needed for the next.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skill Ladder Section -->
+        <div class="section" id="section-ladder">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">🪜</span>
+                    <span>The Skill Ladder</span>
+                </div>
+                <div class="ladder-section">
+                    <div class="ladder-line"></div>
+
+                    <div class="ladder-rung">
+                        <span class="rung-number">1</span>
+                        <div class="rung-title">Integers vs. Rational Numbers</div>
+                        <div class="rung-content">We defined both and discussed what makes rational numbers unique.
+                        </div>
+                    </div>
+
+                    <div class="ladder-rung">
+                        <span class="rung-number">2</span>
+                        <div class="rung-title">Number Line Traversal</div>
+                        <div class="rung-content">We practiced using movement on the number line to visualize adding and
+                            subtracting positive and negative values.</div>
+                    </div>
+
+                    <div class="ladder-rung">
+                        <span class="rung-number">3</span>
+                        <div class="rung-title">Mixed Sign Math</div>
+                        <div class="rung-content">PJ worked on understanding how signs affect the outcome of operations.
+                        </div>
+                    </div>
+
+                    <div class="ladder-rung">
+                        <span class="rung-number">4</span>
+                        <div class="rung-title">Finding Least Common Multiples (LCMs)</div>
+                        <div class="rung-content">We explored how LCMs form the foundation for fraction arithmetic.
+                        </div>
+                    </div>
+
+                    <div class="ladder-rung">
+                        <span class="rung-number">5</span>
+                        <div class="rung-title">Converting to Like Denominators</div>
+                        <div class="rung-content">Using LCMs, PJ learned to transform fractions to have matching
+                            denominators—a key step before adding or subtracting.</div>
+                    </div>
+
+                    <div class="ladder-rung">
+                        <span class="rung-number">6</span>
+                        <div class="rung-title">Applying It All</div>
+                        <div class="rung-content">We put everything together to perform full rational number addition
+                            and subtraction problems.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Strengths Section -->
+        <div class="section" id="section-strengths">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">🌟</span>
+                    <span>What We Celebrated — PJ's Strengths</span>
+                </div>
+                <div class="card-content">
+                    <div class="strength-item">
+                        <h3>Mental Math Master!</h3>
+                        <p>PJ's quick calculation skills are shining. He's developed strong numerical fluency, and it
+                            shows.</p>
+                    </div>
+
+                    <div class="strength-item">
+                        <h3>Integer Confidence!</h3>
+                        <p>He handled integer operations like a pro—adding, subtracting, multiplying, and dividing with
+                            positive and negative numbers. PJ even caught and corrected one of his own sign errors,
+                            showing he's thinking critically rather than memorizing steps.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Focus Areas Section -->
+        <div class="section" id="section-focus">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">🔧</span>
+                    <span>Where We're Building Skill — Current Focus</span>
+                </div>
+                <div class="card-content">
+                    <div class="focus-item">
+                        <h3>Fraction Arithmetic Foundation</h3>
+                        <p>When we began adding fractions, PJ initially made the common mistake of adding denominators
+                            directly. After some targeted practice, we paused to focus on finding and using the Least
+                            Common Denominator (LCD).</p>
+                        <p>We practiced the guiding principle:</p>
+                        <div class="quote-box">
+                            "How many times can the old denominator go into the new one? Multiply that by the old
+                            numerator to get the new numerator."
+                        </div>
+                        <p>By the end of the session, PJ was demonstrating growing confidence with this conversion step
+                            and correctly applying it to solve fraction problems.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="section" id="section-summary">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">🎯</span>
+                    <span>Summary and Next Steps</span>
+                </div>
+                <div class="card-content">
+                    <p>PJ is learning quickly and showing steady improvement in both speed and conceptual understanding.
+                        Our next goal is to solidify the LCD process so it becomes automatic—allowing him to focus on
+                        higher-level reasoning during fraction and algebra problems.</p>
+                    <p><strong>He's on track for mastery. Great work, PJ!</strong></p>
+
+                    <div class="challenge-box">
+                        <h3>🧠 Practice Challenge for Next Session</h3>
+                        <ul>
+                            <li>What is the LCD for 6 and 4?</li>
+                            <li>Convert 1/6 and 1/4 to equivalent fractions using that LCD. Show your work and explain
+                                how you found the new numerators.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Section anchors for navigation
+        const sectionAnchors = [
+            'section-header',
+            'section-overview',
+            'section-ladder',
+            'section-strengths',
+            'section-focus',
+            'section-summary'
+        ];
+
+        let currentSectionIndex = 0;
+        let isProgrammaticScroll = false; // Flag to prevent observers from fighting clicks
+
+        const sections = document.querySelectorAll('.section');
+
+        // --- Observer for Fade-in Animations ---
+        const animationObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.2
+        });
+
+        // --- Observer for Navigation Tracking (Replaces 'scroll' listener) ---
+        // This updates currentSectionIndex when a section is 50% in view
+        const navigationObserver = new IntersectionObserver((entries) => {
+            // If we are scrolling via button click, don't update the index
+            if (isProgrammaticScroll) return;
+
+            entries.forEach(entry => {
+                if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+                    const id = entry.target.id;
+                    const index = sectionAnchors.indexOf(id);
+                    if (index > -1) {
+                        currentSectionIndex = index;
+                    }
+                }
+            });
+        }, {
+            threshold: 0.5 // 50% of the section must be visible
+        });
+
+        // Tell both observers to watch all sections
+        sections.forEach(section => {
+            animationObserver.observe(section);
+            navigationObserver.observe(section);
+        });
+
+        function scrollToSection(direction) {
+            if (direction === 'down') {
+                if (currentSectionIndex < sectionAnchors.length - 1) {
+                    currentSectionIndex++;
+                }
+            } else if (direction === 'up') {
+                if (currentSectionIndex > 0) {
+                    currentSectionIndex--;
+                }
+            }
+
+            const targetSection = document.getElementById(sectionAnchors[currentSectionIndex]);
+            if (targetSection) {
+                isProgrammaticScroll = true; // Set flag to true
+
+                targetSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start' // <-- *** THE FIX ***
+                });
+
+                // After 1 second (time for scroll), reset the flag
+                setTimeout(() => {
+                    isProgrammaticScroll = false;
+                }, 1000);
+            }
+        }
+
+        // Start at the top
+        window.scrollTo(0, 0);
+    </script>
+</body>
+
+</html>

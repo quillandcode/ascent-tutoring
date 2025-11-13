@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PJ | Session Report</title>
+    <style>
+        /* Import Professional Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Nunito+Sans:wght@400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background: linear-gradient(to bottom, #0a1128 0%, #1a2847 50%, #2d3e5f 100%);
+            color: #e8eef5;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(230, 126, 34, 0.9);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover {
+            background: rgba(230, 126, 34, 1);
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px rgba(230, 126, 34, 0.4);
+        }
+
+        .section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            color: #f4a261;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.4em;
+            color: #e67e22;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .header .date {
+            font-size: 1.1em;
+            color: #a8b8d8;
+        }
+
+        .card {
+            background: rgba(26, 38, 56, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 35px;
+            margin: 30px 0;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-left: 5px solid #e67e22;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(230, 126, 34, 0.2);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 2em;
+            color: #f4a261;
+            margin-bottom: 25px;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .emoji {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .card-content {
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .card-content p {
+            margin-bottom: 15px;
+        }
+
+        .ladder-section {
+            position: relative;
+            padding-left: 60px;
+        }
+
+        .ladder-line {
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #e67e22, #f4a261);
+        }
+
+        .ladder-rung {
+            position: relative;
+            margin: 40px 0;
+        }
+
+        .ladder-rung::before {
+            content: '';
+            position: absolute;
+            left: -52px;
+            top: 15px;
+            width: 35px;
+            height: 4px;
+            background: #f4a261;
+        }
+
+        .rung-number {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            background: #e67e22;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            position: absolute;
+            left: -60px;
+            top: 5px;
+        }
+
+        .bonus-rung .rung-number {
+            background: linear-gradient(135deg, #ffd60a, #f4a261);
+        }
+
+        .rung-title {
+            font-size: 1.5em;
+            color: #f4a261;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .bonus-rung .rung-title {
+            color: #ffd60a;
+        }
+
+        .rung-content {
+            color: #d4dce8;
+            font-size: 1.05em;
+            line-height: 1.7;
+        }
+
+        .strength-item {
+            margin: 25px 0;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(230, 126, 34, 0.15), rgba(244, 162, 97, 0.05));
+            border-radius: 8px;
+            border-left: 4px solid #f4a261;
+        }
+
+        .strength-item h3 {
+            color: #f4a261;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .strength-item .number-badge {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            background: #e67e22;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .stats {
+            display: inline-block;
+            background: rgba(244, 162, 97, 0.3);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: #f4a261;
+            border: 1px solid rgba(244, 162, 97, 0.4);
+            font-size: 1.05em;
+        }
+
+        .highlight-box {
+            background: rgba(230, 126, 34, 0.15);
+            border: 2px solid #e67e22;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .highlight-box .big-number {
+            font-size: 3em;
+            color: #f4a261;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .highlight-box .label {
+            font-size: 1.2em;
+            color: #d4dce8;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .nav-buttons {
+                right: 15px;
+            }
+            
+            .nav-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-buttons">
+        <button class="nav-btn" onclick="scrollToSection('up')" aria-label="Scroll Up">↑</button>
+        <button class="nav-btn" onclick="scrollToSection('down')" aria-label="Scroll Down">↓</button>
+    </div>
+
+    <div class="container">
+        <!-- Header Section -->
+        <div class="section visible" id="section-header">
+            <div class="header">
+                <h1>PJ</h1>
+                <div class="subtitle">Skill Ladder Session Report</div>
+                <div class="date">November 12, 2025</div>
+            </div>
+        </div>
+
+        <!-- Overview Section -->
+        <div class="section" id="section-overview">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">🧩</span>
+                    <span>Session Overview</span>
+                </div>
+                <div class="card-content">
+                    <p>We started today's session with a timed mental math warm-up, and PJ was on fire! He completed the set in an incredible <span class="stats">1 minute and 12 seconds</span>, showing outstanding focus and speed.</p>
+                    <p>This was PJ's second "Skill Ladder" session on this topic, and his goal was to <strong>solidify mastery</strong>. He didn't just climb the ladder; he <em>sprinted</em> up it, showing a clear and confident command of every single step.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skill Ladder Section -->
+        <div class="section" id="section-ladder">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">🪜</span>
+                    <span>The Skill Ladder</span>
+                </div>
+                <div class="ladder-section">
+                    <div class="ladder-line"></div>
+                    
+                    <div class="ladder-rung">
+                        <span class="rung-number">1</span>
+                        <div class="rung-title">LCD Lightning Round</div>
+                        <div class="rung-content">PJ flew through this. His ability to find Least Common Multiples (LCMs) is both fast and accurate.</div>
+                    </div>
+
+                    <div class="ladder-rung">
+                        <span class="rung-number">2</span>
+                        <div class="rung-title">Fraction Conversion Fluency</div>
+                        <div class="rung-content">He showed complete mastery here, fluently and flawlessly converting fractions to new denominators.</div>
+                    </div>
+
+                    <div class="ladder-rung">
+                        <span class="rung-number">3</span>
+                        <div class="rung-title">Mixed Numbers ↔ Improper Fractions</div>
+                        <div class="rung-content">PJ zoomed right through this step, showing he was more than ready to apply this skill.</div>
+                    </div>
+
+                    <div class="ladder-rung">
+                        <span class="rung-number">4</span>
+                        <div class="rung-title">Adding/Subtracting with Mixed Numbers</div>
+                        <div class="rung-content">He worked very quickly and accurately. He made one minor simplification mistake after an addition problem, but he clearly understood the entire process—it was a tiny slip, not a knowledge gap.</div>
+                    </div>
+
+                    <div class="ladder-rung">
+                        <span class="rung-number">5</span>
+                        <div class="rung-title">Mixed Signs, Mixed Numbers</div>
+                        <div class="rung-content">PJ's strength with integer rules and his new fraction skills combined perfectly here. He handled these complex problems with speed and confidence.</div>
+                    </div>
+
+                    <div class="ladder-rung bonus-rung">
+                        <span class="rung-number">★</span>
+                        <div class="rung-title">Bonus Rung: The Distributive Property</div>
+                        <div class="rung-content">We tackled a bonus algebra problem, and he blew through it. He initially forgot to combine his like terms at the end, but—critically—he caught and corrected his own mistake immediately, without any prompting. This shows he's thinking critically about the entire problem.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Strengths Section -->
+        <div class="section" id="section-strengths">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">🌟</span>
+                    <span>What We Celebrated — PJ's Strengths</span>
+                </div>
+                <div class="card-content">
+                    <p>PJ had two massive wins today, one in his math skills and one in his study habits.</p>
+
+                    <div class="strength-item">
+                        <h3><span class="number-badge">1</span>Speed AND Accuracy!</h3>
+                        <p>PJ's recall is fantastic. He has truly mastered the process for adding and subtracting rational numbers. He doesn't just know the steps; he <strong>understands why they work</strong>, which allows him to move quickly and confidently.</p>
+                    </div>
+
+                    <div class="strength-item">
+                        <h3><span class="number-badge">2</span>A Huge Process Improvement!</h3>
+                        <p>The biggest win of the day was <strong>organization</strong>. We've been working on his habit of doing problems in random whitespace. Today, he was taught to keep his work aligned and in order, and the result was extraordinary:</p>
+                        
+                        <div class="highlight-box">
+                            <div class="big-number">80%</div>
+                            <div class="label">Improvement in Work Organization</div>
+                        </div>
+
+                        <p>His scratch paper was clear, organized, and easy to follow. This is a huge, critical skill that will help him in all future, more complex math.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="section" id="section-summary">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">🎯</span>
+                    <span>Summary and Next Steps</span>
+                </div>
+                <div class="card-content">
+                    <p>PJ's speed and deep understanding were on full display. His ability to self-correct and his massive improvement in organizing his work show he's operating at a high level.</p>
+                    <p><strong>He has demonstrated clear mastery of this topic. Great, great work, PJ!</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Section anchors for navigation
+        const sectionAnchors = [
+            'section-header',
+            'section-overview',
+            'section-ladder',
+            'section-strengths',
+            'section-summary'
+        ];
+
+        let currentSectionIndex = 0;
+        let isProgrammaticScroll = false;
+
+        const sections = document.querySelectorAll('.section');
+
+        // Observer for Fade-in Animations
+        const animationObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.2
+        });
+
+        // Observer for Navigation Tracking
+        const navigationObserver = new IntersectionObserver((entries) => {
+            if (isProgrammaticScroll) return;
+
+            entries.forEach(entry => {
+                if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+                    const id = entry.target.id;
+                    const index = sectionAnchors.indexOf(id);
+                    if (index > -1) {
+                        currentSectionIndex = index;
+                    }
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+
+        sections.forEach(section => {
+            animationObserver.observe(section);
+            navigationObserver.observe(section);
+        });
+
+        function scrollToSection(direction) {
+            if (direction === 'down') {
+                if (currentSectionIndex < sectionAnchors.length - 1) {
+                    currentSectionIndex++;
+                }
+            } else if (direction === 'up') {
+                if (currentSectionIndex > 0) {
+                    currentSectionIndex--;
+                }
+            }
+
+            const targetSection = document.getElementById(sectionAnchors[currentSectionIndex]);
+            if (targetSection) {
+                isProgrammaticScroll = true;
+
+                targetSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+
+                setTimeout(() => {
+                    isProgrammaticScroll = false;
+                }, 1000);
+            }
+        }
+
+        window.scrollTo(0, 0);
+    </script>
+</body>
+</html>

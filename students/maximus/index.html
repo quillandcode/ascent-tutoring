@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PJ's Tutoring Sessions</title>
+    <title>Maximus's Tutoring Sessions</title>
     <style>
         /* Import Professional Fonts */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Nunito+Sans:wght@400;600&display=swap');
@@ -16,13 +16,9 @@
         }
 
         body {
-            /* Kept new fonts */
             font-family: 'Nunito Sans', sans-serif;
-            /* Restored original background */
             background: linear-gradient(to bottom, #0a1128 0%, #1a2847 50%, #2d3e5f 100%);
             color: #e8eef5;
-
-            /* Kept new Flex Layout */
             display: flex;
             flex-direction: column;
             height: 100vh;
@@ -39,12 +35,10 @@
         }
 
         .student-header {
-            /* Kept new glass style */
             background: rgba(13, 19, 33, 0.75);
             backdrop-filter: blur(12px);
             padding: 20px 40px;
-            /* Restored original color border */
-            border-bottom: 3px solid #e67e22;
+            border-bottom: 3px solid #4a9eff;
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -78,8 +72,7 @@
 
         .student-name {
             font-size: 2em;
-            /* Restored original color */
-            color: #e67e22;
+            color: #4a9eff;
             font-weight: 700;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
@@ -98,8 +91,7 @@
         }
 
         .detail-label {
-            /* Restored original color */
-            color: #4a9eff;
+            color: #64b5f6;
             font-weight: 600;
         }
 
@@ -110,8 +102,7 @@
         }
 
         .session-selector label {
-            /* Restored original color */
-            color: #4a9eff;
+            color: #64b5f6;
             font-weight: 600;
             font-size: 1.1em;
         }
@@ -119,10 +110,8 @@
         .session-selector select {
             padding: 10px 15px;
             font-size: 1em;
-            /* Kept new font */
             font-family: 'Nunito Sans', sans-serif;
-            /* Restored original border */
-            border: 2px solid #e67e22;
+            border: 2px solid #4a9eff;
             border-radius: 8px;
             background: rgba(0, 0, 0, 0.6);
             color: #e8eef5;
@@ -132,20 +121,17 @@
         }
 
         .session-selector select:hover {
-            /* Restored original color */
-            border-color: #f4a261;
+            border-color: #64b5f6;
             background: rgba(0, 0, 0, 0.8);
         }
 
         .session-selector select:focus {
             outline: none;
-            /* Restored original color */
-            border-color: #e67e22;
-            box-shadow: 0 0 15px rgba(230, 126, 34, 0.3);
+            border-color: #4a9eff;
+            box-shadow: 0 0 15px rgba(74, 158, 255, 0.3);
         }
 
         .session-container {
-            /* Kept new flex layout */
             flex-grow: 1;
             width: 100%;
             height: 100%;
@@ -155,12 +141,10 @@
 
         .home-link {
             padding: 10px 20px;
-            /* Restored original color */
-            background: #4a9eff;
+            background: #64b5f6;
             color: #ffffff;
             text-decoration: none;
             border-radius: 8px;
-            /* Kept new font */
             font-family: 'Poppins', sans-serif;
             font-weight: 600;
             transition: all 0.3s ease;
@@ -172,16 +156,14 @@
         }
 
         .home-link:hover {
-            /* Restored original colors */
-            background: #e67e22;
-            border-color: #f4a261;
-            box-shadow: 0 3px 15px rgba(230, 126, 34, 0.4);
+            background: #4a9eff;
+            border-color: #64b5f6;
+            box-shadow: 0 3px 15px rgba(74, 158, 255, 0.4);
         }
 
         .form-link-btn {
             padding: 10px 20px;
-            background: #e67e22;
-            /* Primary orange */
+            background: #4a9eff;
             color: #ffffff;
             text-decoration: none;
             border-radius: 8px;
@@ -196,10 +178,9 @@
         }
 
         .form-link-btn:hover {
-            background: #f4a261;
-            /* Lighter orange on hover */
+            background: #64b5f6;
             color: #0d1321;
-            box-shadow: 0 3px 15px rgba(230, 126, 34, 0.4);
+            box-shadow: 0 3px 15px rgba(74, 158, 255, 0.4);
             transform: translateY(-1px);
         }
 
@@ -253,9 +234,7 @@
 
             .form-link-btn {
                 width: 100%;
-                /* Make it full-width on mobile */
                 justify-content: center;
-                /* Center the text */
                 padding: 12px 20px;
                 font-size: 1em;
             }
@@ -272,7 +251,7 @@
                     <span>Home</span>
                 </a>
                 <div class="student-info">
-                    <div class="student-name">PJ</div>
+                    <div class="student-name">Maximus</div>
                     <div class="student-details">
                         <div class="detail-item">
                             <span class="detail-label">Grade:</span>
@@ -288,10 +267,9 @@
             <div class="session-selector">
                 <label for="sessionSelect">Session:</label>
                 <select id="sessionSelect" onchange="loadSession()">
-                    <option value="sessions/2025-10-05.html">October 5, 2025</option>
-                    <option value="sessions/2025-11-12.html" selected>November 12, 2025 (Latest)</option>
+                    <option value="sessions/2025-11-12.html">November 12, 2025 (Latest)</option>
                     <!-- Add more sessions here as they're created -->
-                    <!-- <option value="sessions/2025-10-12.html">October 12, 2025</option> -->
+                    <!-- <option value="sessions/2025-11-19.html">November 19, 2025</option> -->
                 </select>
             </div>
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSfZBJdmUtCFnfdPWKbHUigzNi20rMQpnYXYhl50wX1n9eDXUw/viewform"

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maximus | Session Report</title>
+    <style>
+        /* Import Professional Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Nunito+Sans:wght@400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background: linear-gradient(to bottom, #0a1128 0%, #1a2847 50%, #2d3e5f 100%);
+            color: #e8eef5;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(74, 158, 255, 0.9);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover {
+            background: rgba(74, 158, 255, 1);
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px rgba(74, 158, 255, 0.4);
+        }
+
+        .section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            color: #64b5f6;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.4em;
+            color: #4a9eff;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .header .date {
+            font-size: 1.1em;
+            color: #a8b8d8;
+        }
+
+        .card {
+            background: rgba(26, 38, 56, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 35px;
+            margin: 30px 0;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-left: 5px solid #4a9eff;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(74, 158, 255, 0.2);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 2em;
+            color: #64b5f6;
+            margin-bottom: 25px;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .emoji {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .card-content {
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .card-content p {
+            margin-bottom: 15px;
+        }
+
+        .ladder-section {
+            position: relative;
+            padding-left: 60px;
+        }
+
+        .ladder-line {
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #4a9eff, #64b5f6);
+        }
+
+        .ladder-rung {
+            position: relative;
+            margin: 40px 0;
+        }
+
+        .ladder-rung::before {
+            content: '';
+            position: absolute;
+            left: -52px;
+            top: 15px;
+            width: 35px;
+            height: 4px;
+            background: #64b5f6;
+        }
+
+        .rung-number {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            background: #4a9eff;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            position: absolute;
+            left: -60px;
+            top: 5px;
+        }
+
+        .bonus-rung .rung-number {
+            background: linear-gradient(135deg, #ffd60a, #f4a261);
+        }
+
+        .rung-title {
+            font-size: 1.5em;
+            color: #64b5f6;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .bonus-rung .rung-title {
+            color: #ffd60a;
+        }
+
+        .rung-content {
+            color: #d4dce8;
+            font-size: 1.05em;
+            line-height: 1.7;
+        }
+
+        .milestone-item {
+            margin: 25px 0;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(74, 158, 255, 0.15), rgba(100, 181, 246, 0.05));
+            border-radius: 8px;
+            border-left: 4px solid #64b5f6;
+        }
+
+        .milestone-item h3 {
+            color: #64b5f6;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .focus-item {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border-left: 3px solid #ffd60a;
+        }
+
+        .focus-item h3 {
+            color: #ffd60a;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .quote-box {
+            background: rgba(74, 158, 255, 0.1);
+            border-left: 4px solid #4a9eff;
+            padding: 20px;
+            margin: 20px 0;
+            font-style: italic;
+            border-radius: 5px;
+            font-size: 1.15em;
+            color: #c5d9f2;
+        }
+
+        .challenge-box {
+            background: linear-gradient(135deg, rgba(74, 158, 255, 0.1), rgba(255, 214, 10, 0.1));
+            border: 2px solid #4a9eff;
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .challenge-box h3 {
+            color: #64b5f6;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .challenge-box p {
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        .stats {
+            display: inline-block;
+            background: rgba(100, 181, 246, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: #64b5f6;
+            border: 1px solid rgba(100, 181, 246, 0.3);
+        }
+
+        .velocity-highlight {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(255, 214, 10, 0.2), rgba(244, 162, 97, 0.2));
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: #ffd60a;
+            border: 1px solid rgba(255, 214, 10, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .nav-buttons {
+                right: 15px;
+            }
+            
+            .nav-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-buttons">
+        <button class="nav-btn" onclick="scrollToSection('up')" aria-label="Scroll Up">↑</button>
+        <button class="nav-btn" onclick="scrollToSection('down')" aria-label="Scroll Down">↓</button>
+    </div>
+
+    <div class="container">
+        <!-- Header Section -->
+        <div class="section visible" id="section-header">
+            <div class="header">
+                <h1>Maximus</h1>
+                <div class="subtitle">Skill Ladder Session Report</div>
+                <div class="date">November 19, 2025</div>
+            </div>
+        </div>
+
+        <!-- Overview Section -->
+        <div class="section" id="section-overview">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">⚡</span>
+                    <span>Session Overview</span>
+                </div>
+                <div class="card-content">
+                    <p>Today's session was electric. Maximus blazed through our mental math warm-up with a perfect score in <span class="velocity-highlight">2 minutes and 54 seconds</span> nearly cutting his previous time in half. That wasn't luck. That was momentum.</p>
+                    <p>From there, we built an entirely new skill ladder focused on multiplication using the box model method. Maximus didn't just climb it—he conquered it, reaching the capstone challenge and solving 2-digit × 2-digit multiplication independently within the session time limit.</p>
+                    <p>This is what acceleration looks like.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skill Ladder Section -->
+        <div class="section" id="section-ladder">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">🪜</span>
+                    <span>The Skill Ladder: Multiplication Mastery</span>
+                </div>
+                <div class="ladder-section">
+                    <div class="ladder-line"></div>
+                    
+                    <div class="ladder-rung">
+                        <span class="rung-number">🔥</span>
+                        <div class="rung-title">Warm-Up: Mental Math</div>
+                        <div class="rung-content">Perfect score. Lightning speed. Maximus answered every question with confidence and precision, showing that his mental pathways are now highways.</div>
+                    </div>
+
+                    <div class="ladder-rung">
+                        <span class="rung-number">1</span>
+                        <div class="rung-title">Place Value & Expanded Form</div>
+                        <div class="rung-content">He mixed up two place values in one problem—then immediately self-corrected on the next with zero help. That mistake never appeared again. He explained his reasoning through each problem, demonstrating true understanding.</div>
+                    </div>
+
+                    <div class="ladder-rung">
+                        <span class="rung-number">2</span>
+                        <div class="rung-title">2-Digit × 1-Digit Multiplication (Box Model)</div>
+                        <div class="rung-content">Grasped the box model concept quickly. Used place value understanding to break down the 2-digit numbers, executed multiplication and addition cleanly, and walked through every step with clarity.</div>
+                    </div>
+
+                    <div class="ladder-rung bonus-rung">
+                        <span class="rung-number">★</span>
+                        <div class="rung-title">Capstone: 2-Digit × 2-Digit (Box Model)</div>
+                        <div class="rung-content">Only needed one example. Understood partial products immediately. Combined all previous ladder steps independently, solved the problem himself, explained his work clearly, and arrived at the correct answer. <strong>Complete mastery achieved within the session.</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Milestone Section -->
+        <div class="section" id="section-milestone">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">🚀</span>
+                    <span>What We Celebrated — Velocity and Vision</span>
+                </div>
+                <div class="card-content">
+                    <div class="milestone-item">
+                        <h3>The Self-Correction Architecture</h3>
+                        <p>The most remarkable moment came during Rung 1. Maximus made a place value error—and then, with no prompting, caught the pattern and corrected himself on the very next problem. He didn't just fix a mistake; he built an internal error-detection system that operated flawlessly for the rest of the session.</p>
+                        <p>That's not memorization. That's metacognition. That's the foundation of mathematical thinking.</p>
+                    </div>
+
+                    <div class="milestone-item">
+                        <h3>Confident Without Second-Guessing</h3>
+                        <p>Throughout the session, Maximus demonstrated something rare and powerful: confidence separated from correctness. He trusts his process and his ability to think—which means he doesn't spiral into self-doubt when challenged. When he's wrong, he's genuinely open to feedback and adjusts his path immediately.</p>
+                        <p>This is resilient certainty. This is the mindset of a learner who's discovered he can fly.</p>
+                    </div>
+
+                    <div class="milestone-item">
+                        <h3>Conceptual Compression</h3>
+                        <p>Watch the pattern: Rung 1 needed correction. Rung 2 needed demonstration. The Capstone? One example, and he had it. Each rung required less scaffolding than the last because Maximus isn't just learning multiplication—he's learning how to recognize mathematical patterns themselves.</p>
+                        <div class="quote-box">
+                            "He's not climbing a ladder anymore. He's learning to see the architecture of ladders."
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Focus Areas Section -->
+        <div class="section" id="section-focus">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">🎯</span>
+                    <span>Where We're Building Next</span>
+                </div>
+                <div class="card-content">
+                    <div class="focus-item">
+                        <h3>Extending the Box Model</h3>
+                        <p>Now that Maximus has mastered the box model for 2-digit × 2-digit multiplication, we'll extend it to more complex scenarios: 3-digit numbers, problems with regrouping challenges, and eventually connecting it to algebraic thinking.</p>
+                    </div>
+
+                    <div class="focus-item">
+                        <h3>Maintaining Velocity with Complexity</h3>
+                        <p>His speed and accuracy are excellent. Our next focus is ensuring that as problems grow more complex, he maintains both his methodical process and his confidence. We'll introduce multi-step word problems that require him to choose and apply the right strategy.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="section" id="section-summary">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">✨</span>
+                    <span>Summary and Next Steps</span>
+                </div>
+                <div class="card-content">
+                    <p>Maximus conquered an entire skill ladder in a single session—demonstrating not only procedural competence but a powerful ability to self-correct and verbally articulate conceptual understanding. His warm-up time dropped from over 6 minutes to under 3. His confidence is rock-solid yet flexible. His thinking is clear and precise.</p>
+                    <p><strong>This is what mastery in motion looks like.</strong></p>
+
+                    <div class="challenge-box">
+                        <h3>🧠 Practice Challenge for Next Session</h3>
+                        <p><strong>Use the box model to solve: 34 × 27</strong></p>
+                        <p>Break both numbers into tens and ones, set up your box with four sections, calculate each partial product, then combine them for your final answer. Walk through your reasoning at each step—and bring any questions you have about the process.</p>
+                        <p><em>Bonus challenge: Can you estimate what the answer should be close to before you calculate? (Hint: Think about 30 × 30...)</em></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Section anchors for navigation
+        const sectionAnchors = [
+            'section-header',
+            'section-overview',
+            'section-ladder',
+            'section-milestone',
+            'section-focus',
+            'section-summary'
+        ];
+
+        let currentSectionIndex = 0;
+        let isProgrammaticScroll = false;
+
+        const sections = document.querySelectorAll('.section');
+
+        // Observer for Fade-in Animations
+        const animationObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.2
+        });
+
+        // Observer for Navigation Tracking
+        const navigationObserver = new IntersectionObserver((entries) => {
+            if (isProgrammaticScroll) return;
+
+            entries.forEach(entry => {
+                if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+                    const id = entry.target.id;
+                    const index = sectionAnchors.indexOf(id);
+                    if (index > -1) {
+                        currentSectionIndex = index;
+                    }
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+
+        sections.forEach(section => {
+            animationObserver.observe(section);
+            navigationObserver.observe(section);
+        });
+
+        function scrollToSection(direction) {
+            if (direction === 'down') {
+                if (currentSectionIndex < sectionAnchors.length - 1) {
+                    currentSectionIndex++;
+                }
+            } else if (direction === 'up') {
+                if (currentSectionIndex > 0) {
+                    currentSectionIndex--;
+                }
+            }
+
+            const targetSection = document.getElementById(sectionAnchors[currentSectionIndex]);
+            if (targetSection) {
+                isProgrammaticScroll = true;
+
+                targetSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+
+                setTimeout(() => {
+                    isProgrammaticScroll = false;
+                }, 1000);
+            }
+        }
+
+        window.scrollTo(0, 0);
+    </script>
+</body>
+</html>

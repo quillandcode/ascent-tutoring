@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PJ | Session Report - Equations & Inequalities</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Nunito+Sans:wght@400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background: linear-gradient(to bottom, #0a1128 0%, #1a2847 50%, #2d3e5f 100%);
+            color: #e8eef5;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        /* Snowflake Animation */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            z-index: 1;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1em;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(230, 126, 34, 0.9);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover {
+            background: rgba(230, 126, 34, 1);
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px rgba(230, 126, 34, 0.4);
+        }
+
+        .section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            color: #f4a261;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.4em;
+            color: #e67e22;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .header .date {
+            font-size: 1.1em;
+            color: #a8b8d8;
+        }
+
+        .card {
+            background: rgba(26, 38, 56, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 35px;
+            margin: 30px 0;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-left: 5px solid #e67e22;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(230, 126, 34, 0.2);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 2em;
+            color: #f4a261;
+            margin-bottom: 25px;
+        }
+
+        .emoji {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .emoji {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .card-content {
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .card-content p {
+            margin-bottom: 15px;
+        }
+
+        .ladder-section {
+            position: relative;
+            padding-left: 60px;
+        }
+
+        .ladder-line {
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #e67e22, #f4a261);
+        }
+
+        .ladder-rung {
+            position: relative;
+            margin: 40px 0;
+        }
+
+        .ladder-rung::before {
+            content: '';
+            position: absolute;
+            left: -52px;
+            top: 15px;
+            width: 35px;
+            height: 4px;
+            background: #f4a261;
+        }
+
+        .rung-number {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            background: #e67e22;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            position: absolute;
+            left: -60px;
+            top: 5px;
+        }
+
+        .bonus-rung .rung-number {
+            background: linear-gradient(135deg, #ffd60a, #f4a261);
+        }
+
+        .rung-title {
+            font-size: 1.5em;
+            color: #f4a261;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .bonus-rung .rung-title {
+            color: #ffd60a;
+        }
+
+        .rung-content {
+            color: #d4dce8;
+            font-size: 1.05em;
+            line-height: 1.7;
+        }
+
+        .stats {
+            display: inline-block;
+            background: rgba(244, 162, 97, 0.3);
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: #f4a261;
+            border: 1px solid rgba(244, 162, 97, 0.4);
+            font-size: 1.05em;
+        }
+
+        .highlight-box {
+            background: rgba(230, 126, 34, 0.15);
+            border: 2px solid #e67e22;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .highlight-box .big-number {
+            font-size: 3em;
+            color: #f4a261;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .highlight-box .label {
+            font-size: 1.2em;
+            color: #d4dce8;
+        }
+
+        .strategy-box {
+            background: linear-gradient(135deg, rgba(230, 126, 34, 0.2), rgba(244, 162, 97, 0.1));
+            border: 2px solid #e67e22;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 8px 30px rgba(230, 126, 34, 0.25);
+        }
+
+        .strategy-box h3 {
+            color: #ffd60a;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .strategy-box p {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .strategy-box .action-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #ffd60a;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .nav-buttons {
+                right: 15px;
+            }
+            
+            .nav-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-buttons">
+        <button class="nav-btn" onclick="scrollToSection('up')" aria-label="Scroll Up">↑</button>
+        <button class="nav-btn" onclick="scrollToSection('down')" aria-label="Scroll Down">↓</button>
+    </div>
+
+    <div class="container">
+        <!-- Header Section -->
+        <div class="section visible" id="section-header">
+            <div class="header">
+                <h1>PJ</h1>
+                <div class="subtitle">Skill Ladder Session Report</div>
+                <div class="date">Equations & Inequalities</div>
+            </div>
+        </div>
+
+        <!-- Overview Section -->
+        <div class="section" id="section-overview">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">⚖️</span>
+                    <span>Session Overview</span>
+                </div>
+                <div class="card-content">
+                    <p>Today's session was about something profound: <strong>making the invisible visible</strong>. PJ isn't learning algebra for the first time—he already understands it. What we're working on is something more challenging: retraining his brain to write down what it's already solving in his head.</p>
+                    
+                    <p>Think of it like this: PJ has been running calculations in his mind like a high-speed processor. That's impressive. But his teacher needs to see the <em>process</em>, not just the answer. So we're teaching the mental mathematician to become a <strong>paper-trail architect</strong>—to document his thinking, step by step, line by line.</p>
+
+                    <p>We focused on two critical principles: (1) Operations must be <em>reversed</em> when you move a term to the other side of the equal sign (addition becomes subtraction, multiplication becomes division), and (2) Whatever you do to one side must be done to the other side to keep the equation <em>true</em>. These aren't poetic ideas—they're the fundamental rules that make algebra work.</p>
+
+                    <p>Today's mission: <strong>Solving Equations and Inequalities</strong>, with a special focus on the discipline of showing work—not because he doesn't know how, but because his teacher requires proof of the journey.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skill Ladder Section -->
+        <div class="section" id="section-ladder">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">🪜</span>
+                    <span>The Skill Ladder</span>
+                </div>
+                <div class="ladder-section">
+                    <div class="ladder-line"></div>
+                    
+                    <div class="ladder-rung">
+                        <span class="rung-number">1</span>
+                        <div class="rung-title">Verification (The Concept of Truth)</div>
+                        <div class="rung-content">PJ immediately grasped how to check whether a value makes an equation or inequality "true." This is foundational work—understanding what we're even looking for. He sailed through this with zero friction. When you understand the <em>why</em> behind the math, the <em>how</em> becomes much easier. <strong>Status: Mastered.</strong></div>
+                    </div>
+
+                    <div class="ladder-rung">
+                        <span class="rung-number">2</span>
+                        <div class="rung-title">One-Step Mechanics & The "Flip"</div>
+                        <div class="rung-content">
+                            <p>This is where the habit retraining began. PJ understands the mechanics—addition becomes subtraction, multiplication becomes division. But we focused heavily on <strong>writing down every step</strong>, even when his brain wants to skip ahead.</p>
+                            
+                            <p>We spent targeted time on problems like <em>x ÷ 11 = 3</em>, reinforcing that we must multiply both sides by 11 to isolate x. The mechanics? Solid. The documentation? That's the new muscle we're building.</p>
+
+                            <p><strong>The Flip Trap:</strong> Here's the recurring challenge—<strong>remembering to flip the inequality sign when multiplying or dividing by a negative number</strong>. This rule is counterintuitive; it goes against what our brains expect. PJ needs guided reminders to catch this specific rule during the solving process. This challenge keeps reappearing, but that's okay. Every time it shows up, it's another opportunity to strengthen that mental pathway.</p>
+
+                            <strong>Status: Habit Re-training & Procedural Focus.</strong>
+                        </div>
+                    </div>
+
+                    <div class="ladder-rung">
+                        <span class="rung-number">3</span>
+                        <div class="rung-title">Synthesizing Skills (The Two-Step)</div>
+                        <div class="rung-content">Now we're combining tools. PJ successfully synthesized three major components: conceptual understanding, reversing operations, and applying the Flip rule when needed. This is where the ladder gets steeper, but he handled it well.
+
+                        <p style="margin-top: 15px;">More importantly, he's building the habit of <strong>rewriting the entire equation with every step</strong>. This "line-by-line" approach ensures he doesn't lose track of the math—and it gives his teacher exactly what they're looking for: visible proof of logical progression.</p>
+
+                        <strong>Status: Solid Integration.</strong></div>
+                    </div>
+
+                    <div class="ladder-rung bonus-rung">
+                        <span class="rung-number">4</span>
+                        <div class="rung-title">The Full Integration (Variables on Both Sides)</div>
+                        <div class="rung-content">
+                            <p>This was it—the integration of everything from Rungs 1 through 3, plus the new challenge of <strong>combining like terms on both sides of the equal sign</strong>. This is the highest-level thinking we've tackled so far.</p>
+
+                            <div class="highlight-box">
+                                <div class="big-number">~20%</div>
+                                <div class="label">Support Required</div>
+                            </div>
+
+                            <p>PJ showed a <strong>strong understanding of the "why" behind the steps</strong>. He proved he understands the logic—how to move terms across the equal sign while maintaining balance. He needed about 20% guidance, mostly "spotting" him on the Flip Trap and the mechanics of reversing division.</p>
+
+                            <p>But here's what matters: <em>he got to the finish line</em>. He wrestled with the challenge and won, even if he needed a coach in his corner for a couple of moments. That's not failure—that's <strong>guided mastery</strong>.</p>
+
+                            <strong>Status: Guided Mastery (~20% Support).</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Insight Section -->
+        <div class="section" id="section-insight">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">💡</span>
+                    <span>The Critical Discovery</span>
+                </div>
+                <div class="card-content">
+                    <p>Here's what's really happening in PJ's algebra journey: <strong>He's not struggling with understanding—he's undergoing a transformation of habit.</strong></p>
+
+                    <p>Because his teacher acts as a facilitator rather than a direct lecturer, PJ is responsible for teaching himself via the packet. This means he needs to be able to decode instructions, apply concepts, and—critically—<em>show his work in a way that proves he knows what he's doing</em>.</p>
+
+                    <p>Our Skill Ladder approach is helping him break down those packet instructions into manageable rungs. Each session, we're not just teaching algebra—we're teaching him how to learn algebra independently, how to document his thinking, and how to meet his teacher's expectations for visible work.</p>
+
+                    <p style="background: rgba(230, 126, 34, 0.15); border-left: 4px solid #f4a261; border-radius: 8px; padding: 20px; margin: 20px 0; font-style: italic;">PJ has been a brilliant mental mathematician—solving problems in his head like an architect visualizing a building. But now, he needs to produce the blueprints. The building is still the same; we're just making sure he can draw the plans on paper so others can see his genius at work.</p>
+
+                    <p>This isn't about fixing something broken. This is about <strong>adaptation</strong>—learning to communicate mathematics in the language his teacher requires. And he's doing it.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Strategy Section -->
+        <div class="section" id="section-strategy">
+            <div class="strategy-box">
+                <h3>🎯 The Line-by-Line Strategy</h3>
+                <p>To build the habit of visible work, we're reinforcing a critical practice: <strong>rewrite the entire equation with every step</strong>.</p>
+                
+                <p>This accomplishes three things:</p>
+                <p><strong>Clarity:</strong> It keeps PJ from losing track of where he is in the problem.</p>
+                <p><strong>Proof:</strong> It gives his teacher the visible evidence they need to award full credit.</p>
+                <p><strong>Habit:</strong> It trains his brain to default to documentation, not just calculation.</p>
+
+                <div class="action-item">
+                    <strong>📋 Action Item for This Week:</strong><br><br>
+                    Please encourage PJ to write out every step of his algebra work this week—<em>even when he knows the answer in his head</em>. The goal isn't to slow him down permanently; it's to build the muscle memory for showing work. Once this becomes automatic, he'll be able to move faster <em>and</em> meet his teacher's requirements for documented reasoning.
+                    <br><br>
+                    Remind him: <strong>The mental math is impressive, but the paper trail is what earns the grade.</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="section" id="section-summary">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">🏀</span>
+                    <span>The Big Picture</span>
+                </div>
+                <div class="card-content">
+                    <p>PJ faced the challenge of variables on both sides today and emerged victorious. He tackled one of the most complex concepts in introductory algebra and proved he understands the logic behind the process.</p>
+
+                    <p>Yes, the Flip Trap keeps reappearing. Yes, he still needs reminders to document every step. But those are <strong>refinements</strong>, not failures. The foundation is solid. The understanding is there. Now we're just polishing the execution.</p>
+                    
+                    <p>This work isn't just about passing tests or satisfying teacher requirements—though both matter. It's about building <strong>mathematical confidence</strong> and learning how to learn. Every equation PJ solves, every step he writes down, every time he catches himself skipping ahead and chooses to document instead—those are victories.</p>
+
+                    <div class="highlight-box">
+                        <p style="font-size: 1.2em; margin: 0;"><strong>Remember:</strong> The goal isn't perfection on the first try. The goal is progress, one rung at a time. And PJ is climbing.</p>
+                    </div>
+                    
+                    <p style="margin-top: 25px;"><strong>Keep building those blueprints, PJ. The court—and your GPA—are waiting.</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources Section -->
+        <div class="section" id="section-resources">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">📚</span>
+                    <span>Practice Resources</span>
+                </div>
+                <div class="card-content">
+                    <p>Here are some resources to help reinforce today's concepts:</p>
+                    
+                    <div class="strategy-box">
+                        <h3>📄 Cheat Sheet</h3>
+                        <p style="text-align: center; margin-bottom: 20px;">Quick reference guide for solving equations and inequalities</p>
+                        <p style="text-align: center;">
+                            <a href="algebra-cheat-sheet.html" style="display: inline-block; background: #e67e22; color: white; padding: 15px 30px; border-radius: 8px; text-decoration: none; font-weight: bold; transition: all 0.3s ease;">
+                                View Cheat Sheet
+                            </a>
+                        </p>
+                    </div>
+
+                    <div class="strategy-box" style="margin-top: 30px;">
+                        <h3>🎥 Video Tutorials</h3>
+                        <p style="margin-bottom: 20px;">Watch these helpful explanations to reinforce the concepts:</p>
+                        
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #ffd60a;">
+                            <strong style="color: #f4a261;">Solving One-Step Equations</strong><br>
+                            <a href="https://www.youtube.com/watch?v=VIDEO_ID_HERE" target="_blank" style="color: #a8b8d8; text-decoration: none; display: inline-block; margin-top: 8px;">
+                                🔗 Watch on YouTube
+                            </a>
+                        </div>
+
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 8px; border-left: 4px solid #ffd60a;">
+                            <strong style="color: #f4a261;">Variables on Both Sides</strong><br>
+                            <a href="https://www.youtube.com/watch?v=VIDEO_ID_HERE" target="_blank" style="color: #a8b8d8; text-decoration: none; display: inline-block; margin-top: 8px;">
+                                🔗 Watch on YouTube
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Snowflake generation
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.innerHTML = '❄';
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.animationDuration = Math.random() * 3 + 5 + 's';
+            snowflake.style.opacity = Math.random() * 0.6 + 0.4;
+            snowflake.style.fontSize = Math.random() * 10 + 10 + 'px';
+            
+            document.body.appendChild(snowflake);
+            
+            setTimeout(() => {
+                snowflake.remove();
+            }, 8000);
+        }
+
+        setInterval(createSnowflake, 300);
+
+        // Section anchors for navigation
+        const sectionAnchors = [
+            'section-header',
+            'section-overview',
+            'section-ladder',
+            'section-insight',
+            'section-strategy',
+            'section-summary',
+            'section-resources'
+        ];
+
+        let currentSectionIndex = 0;
+        let isProgrammaticScroll = false;
+
+        const sections = document.querySelectorAll('.section');
+
+        // Observer for Fade-in Animations
+        const animationObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.2
+        });
+
+        // Observer for Navigation Tracking
+        const navigationObserver = new IntersectionObserver((entries) => {
+            if (isProgrammaticScroll) return;
+
+            entries.forEach(entry => {
+                if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+                    const id = entry.target.id;
+                    const index = sectionAnchors.indexOf(id);
+                    if (index > -1) {
+                        currentSectionIndex = index;
+                    }
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+
+        sections.forEach(section => {
+            animationObserver.observe(section);
+            navigationObserver.observe(section);
+        });
+
+        function scrollToSection(direction) {
+            if (direction === 'down') {
+                if (currentSectionIndex < sectionAnchors.length - 1) {
+                    currentSectionIndex++;
+                }
+            } else if (direction === 'up') {
+                if (currentSectionIndex > 0) {
+                    currentSectionIndex--;
+                }
+            }
+
+            const targetSection = document.getElementById(sectionAnchors[currentSectionIndex]);
+            if (targetSection) {
+                isProgrammaticScroll = true;
+
+                targetSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+
+                setTimeout(() => {
+                    isProgrammaticScroll = false;
+                }, 1000);
+            }
+        }
+
+        window.scrollTo(0, 0);
+    </script>
+</body>
+</html>

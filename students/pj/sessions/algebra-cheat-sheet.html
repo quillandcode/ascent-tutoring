@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algebra Cheat Sheet - Equations & Inequalities</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Nunito+Sans:wght@400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background: linear-gradient(to bottom, #0a1128 0%, #1a2847 50%, #2d3e5f 100%);
+            color: #e8eef5;
+            overflow-x: hidden;
+            position: relative;
+            padding: 40px 20px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        /* Snowflake Styles */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            z-index: 1;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1em;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            color: #f4a261;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.3em;
+            color: #e67e22;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #e67e22, #f4a261);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 126, 34, 0.5);
+        }
+
+        .card {
+            background: rgba(26, 38, 56, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 25px 0;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-left: 5px solid #e67e22;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8em;
+            color: #f4a261;
+            margin-bottom: 20px;
+        }
+
+        .golden-box {
+            background: linear-gradient(135deg, rgba(255, 214, 10, 0.2), rgba(244, 162, 97, 0.1));
+            border: 2px solid #ffd60a;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.15em;
+            font-weight: 600;
+            color: #ffd60a;
+        }
+
+        .step-item {
+            background: rgba(230, 126, 34, 0.1);
+            border-left: 4px solid #f4a261;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: #e67e22;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .danger-zone {
+            background: rgba(230, 126, 34, 0.15);
+            border: 2px solid #e67e22;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+
+        .danger-title {
+            color: #ffd60a;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .example-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 12px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 3px solid #a8b8d8;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #f4a261;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .highlight {
+            background: rgba(244, 162, 97, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            color: #f4a261;
+        }
+
+        /* PRINT OPTIMIZATION */
+        @media print {
+            body {
+                background: white !important;
+                color: #1a2847 !important;
+                padding: 0;
+            }
+            .snowflake, .download-btn {
+                display: none !important;
+            }
+            .container {
+                max-width: 100%;
+            }
+            .card {
+                background: white !important;
+                border: 1px solid #ccc !important;
+                border-left: 8px solid #e67e22 !important;
+                box-shadow: none !important;
+                page-break-inside: avoid;
+                margin: 15px 0;
+            }
+            .golden-box {
+                background: #fff9db !important;
+                border: 2px solid #ffd60a !important;
+                color: #856404 !important;
+            }
+            .danger-zone {
+                background: #fff5eb !important;
+                border: 2px solid #e67e22 !important;
+                color: #1a2847 !important;
+            }
+            .example-box {
+                background: #f8f9fa !important;
+                border-left: 3px solid #333 !important;
+                color: #333 !important;
+            }
+            .step-item {
+                background: #fdf2e9 !important;
+                color: #1a2847 !important;
+            }
+            .highlight {
+                background: #ffe8cc !important;
+                color: #d9480f !important;
+            }
+            .card-title, .header h1, .subtitle {
+                color: #d9480f !important;
+                text-shadow: none !important;
+            }
+            .danger-title {
+                color: #d9480f !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Algebra Cheat Sheet</h1>
+            <div class="subtitle">Equations & Inequalities</div>
+            <button class="download-btn" onclick="window.print()">📥 Save as PDF / Print</button>
+        </div>
+
+        <div class="card">
+            <div class="card-title">⚖️ The Golden Rule</div>
+            <div class="golden-box">
+                Whatever you do to one side of the "River" (the = or inequality sign), you MUST do to the other side to keep it balanced.
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">🎯 The 3-Step Success Plan</div>
+            <div class="step-item">
+                <span class="step-number">1</span>
+                <strong>Simplify First:</strong> Distribute (multiply into parentheses) and Combine Like Terms on the <u>same</u> side of the river.
+            </div>
+            <div class="step-item">
+                <span class="step-number">2</span>
+                <strong>Pick a Side:</strong> If you have <em>x</em> on both sides, move the smaller one across the "river" to join the larger one.
+            </div>
+            <div class="step-item">
+                <span class="step-number">3</span>
+                <strong>Unwrap the Gift:</strong> Undo addition/subtraction first, then undo multiplication/division last.
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">⚠️ The Danger Zones</div>
+            
+            <div class="danger-zone">
+                <div class="danger-title">🌊 1. The "Flip Trap" (The River Analogy)</div>
+                <p>When you multiply or divide by a <span class="highlight">NEGATIVE</span> number, the relationship is reversed.</p>
+                <p><strong>The Analogy:</strong> Multiplying or dividing by a negative is so powerful it makes the <strong>River change direction.</strong></p>
+                <div class="example-box">
+                    <strong>Example:</strong> -4x < 20<br>
+                    <strong>Action:</strong> Divide both sides by -4... The river flips! → x > -5
+                </div>
+            </div>
+
+            <div class="danger-zone">
+                <div class="danger-title">📤 2. Reversing Division (x is on Top)</div>
+                <p>If <em>x</em> is being divided, use multiplication to set it free.</p>
+                <div class="example-box">
+                    <strong>Example:</strong> x / 11 = 3<br>
+                    <strong>Action:</strong> Multiply both sides by 11. → x = 33
+                </div>
+            </div>
+
+            <div class="danger-zone">
+                <div class="danger-title">🏠 3. The "Basement" Problem (x is on Bottom)</div>
+                <p>If <em>x</em> is in the denominator, you must move it out of the basement first!</p>
+                <div class="example-box">
+                    <strong>Example:</strong> 12 / x = 4<br>
+                    <strong>Action:</strong> Multiply both sides by x to get 12 = 4x.<br>
+                    <strong>Solve:</strong> Divide by 4. Result: 3 = x
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            snowflake.innerHTML = '❄';
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.animationDuration = Math.random() * 3 + 5 + 's';
+            snowflake.style.opacity = Math.random() * 0.6 + 0.4;
+            document.body.appendChild(snowflake);
+            setTimeout(() => { snowflake.remove(); }, 8000);
+        }
+        setInterval(createSnowflake, 300);
+    </script>
+</body>
+</html>

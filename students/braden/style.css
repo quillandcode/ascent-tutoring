@@ -1,0 +1,236 @@
+/* Universal Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* --- 1. PARENT SHELL STYLES (index.html) --- */
+/* These styles only trigger if the body has class 'parent-page' */
+body.parent-page {
+    background: #0d3d0d; /* Dark matching the session theme */
+    font-family: 'Georgia', 'Times New Roman', serif;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+body.parent-page .nav-header {
+    background: white;
+    border-bottom: 4px solid #2d5c2d;
+    padding: 15px 30px;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+body.parent-page .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+body.parent-page .nav-left, 
+body.parent-page .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+/* Identity Branding in Shell */
+body.parent-page .identity-name {
+    font-weight: 900;
+    color: #0d3d0d;
+    font-size: 1.4rem;
+    letter-spacing: 1px;
+    line-height: 1;
+}
+
+body.parent-page .detail-pill {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: #f0f7f0;
+    color: #2d5c2d;
+    padding: 3px 10px;
+    border-radius: 12px;
+    border: 1px solid #c8dcc8;
+    text-transform: uppercase;
+    margin-top: 4px;
+    display: inline-block;
+}
+
+body.parent-page .main-iframe {
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    border: none;
+    /* This creates the dark green 'gutter' background around the white report sheet */
+    background: linear-gradient(135deg, #0d3d0d 0%, #1a5c1a 50%, #0d3d0d 100%);
+}
+
+/* Hub Navigation Buttons */
+body.parent-page .nav-btn {
+    text-decoration: none;
+    color: #2d5c2d;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-family: 'Segoe UI', sans-serif;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid transparent;
+}
+
+body.parent-page .nav-btn:hover {
+    background: #f0f7f0;
+    border-color: #2d5c2d;
+}
+
+body.parent-page .action-btn {
+    background: #2d5c2d;
+    color: white !important;
+    box-shadow: 0 4px 10px rgba(45, 92, 45, 0.3);
+}
+
+body.parent-page .action-btn:hover {
+    background: #1a3d1a;
+    transform: translateY(-1px);
+}
+
+body.parent-page select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-family: 'Segoe UI', sans-serif;
+    color: #333;
+    outline: none;
+}
+
+/* --- 2. SESSION CONTENT STYLES (Reports) --- */
+/* These styles trigger only when NOT in the parent shell */
+body:not(.parent-page) {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    line-height: 1.8;
+    color: #1a1a1a;
+    background: transparent; /* Iframe background is handled by the parent shell */
+    padding: 40px 20px;
+    min-height: 100vh;  /* Ensures full viewport coverage */
+    overflow-y: auto;   /* Allows internal scrolling */
+    overflow-x: hidden; /* Prevents horizontal scroll */
+}
+
+/* The White 'Sheet of Paper' */
+body:not(.parent-page) .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 25px 70px rgba(0,0,0,0.3);
+    overflow: hidden;
+    border: 3px solid #2d5c2d;
+    position: relative;
+}
+
+.header-banner {
+    background: linear-gradient(135deg, #0d3d0d 0%, #2d5c2d 100%);
+    padding: 50px 60px;
+    color: white;
+}
+
+.student-name {
+    font-size: 3.5em;
+    font-weight: 700;
+    color: #ffd700;
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+.content-wrapper {
+    padding: 50px 60px;
+}
+
+.section-title {
+    font-size: 2em;
+    color: #0d3d0d;
+    border-bottom: 4px solid #2d5c2d;
+    margin-bottom: 25px;
+    padding-bottom: 5px;
+}
+
+/* Strength Grid & Cards */
+.strength-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.strength-card {
+    background: #f9fdf9;
+    padding: 25px;
+    border-radius: 8px;
+    border-left: 5px solid #2d5c2d;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.strength-card.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Floating Vertical Navigation (Inside Report Only) */
+.nav-controls {
+    position: fixed;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 1000;
+}
+
+body:not(.parent-page) .nav-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #2d5c2d;
+    color: #2d5c2d;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: all 0.2s;
+}
+
+body:not(.parent-page) .nav-btn:hover {
+    background: #2d5c2d;
+    color: white;
+}
+
+/* Animations for list items */
+.next-steps li {
+    list-style: none;
+    margin: 15px 0;
+    padding-left: 30px;
+    position: relative;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: all 0.5s ease-out;
+}
+
+.next-steps li.in-view {
+    opacity: 1;
+    transform: translateX(0);
+}

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PJ | Session Report - Linear Equations</title>
+    <link rel="stylesheet" href="pj-style.css">
+    <style>
+        /* Basketball Physics Animation */
+        .basketball {
+            position: fixed;
+            z-index: 1;
+            font-size: 1em;
+            pointer-events: none;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        /* Linear Equations specific styles */
+        /* .section {
+            min-height: auto;
+        } */
+        .section {
+            min-height: 100vh;
+            padding: 80px 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+}
+
+        
+        .formula-badge {
+            display: inline-block;
+            background: rgba(230, 126, 34, 0.2);
+            border: 2px solid #e67e22;
+            border-radius: 8px;
+            padding: 12px 20px;
+            margin: 10px 5px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #f4a261;
+            font-size: 1.1em;
+        }
+
+        .mastery-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, rgba(255, 214, 10, 0.3), rgba(244, 162, 97, 0.3));
+            border: 2px solid #ffd60a;
+            border-radius: 25px;
+            padding: 15px 25px;
+            margin: 20px 0;
+            font-weight: bold;
+            color: #ffd60a;
+            font-size: 1.3em;
+            box-shadow: 0 5px 20px rgba(255, 214, 10, 0.3);
+        }
+
+        .challenge-box {
+            background: rgba(26, 38, 56, 0.7);
+            border-left: 5px solid #e67e22;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .challenge-box h4 {
+            color: #f4a261;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .breakthrough-moment {
+            background: rgba(255, 214, 10, 0.15);
+            border: 2px dashed #ffd60a;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .formula-badge {
+                font-size: 1em;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-buttons">
+        <button class="nav-btn" onclick="scrollToSection('up')" aria-label="Scroll Up">↑</button>
+        <button class="nav-btn" onclick="scrollToSection('down')" aria-label="Scroll Down">↓</button>
+    </div>
+
+    <div class="container">
+        <!-- Header Section -->
+        <div class="section visible" id="section-header">
+            <div class="header">
+                <h1>PJ</h1>
+                <div class="subtitle">Skill Ladder Session Report</div>
+                <div class="date">Linear Equations: From Coordinates to Mastery</div>
+            </div>
+        </div>
+
+        <!-- Overview Section -->
+        <div class="section" id="section-overview">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">📈</span>
+                    <span>Session Overview</span>
+                </div>
+                <div class="card-content">
+                    <p>Today's session was about building a complete picture of linear equations from the ground up. We didn't just memorize formulas—we explored <strong>how lines work</strong>, what their components mean, and how to calculate them with precision.</p>
+                    
+                    <p>This wasn't a smooth, frictionless climb. PJ hit mental blocks. He over-analyzed when he should have simplified. He mixed up coordinates and stumbled on negative numbers. But here's what matters: <strong>he pushed through every obstacle</strong>. When confusion struck, he didn't shut down—he asked questions, accepted redirection, and kept working until the concept clicked.</p>
+
+                    <p>We covered four critical rungs: understanding coordinate relationships, calculating slope with the formula, defining the y-intercept, and finally, synthesizing it all independently on a test. By the end, PJ proved he could handle linear equations without a safety net.</p>
+
+                    <div class="mastery-badge">
+                        <span>🎯</span>
+                        <span>Climbed All Four Rungs — Test Aced</span>
+                    </div>
+
+                    <p>Today's mission: <strong>Master linear equations</strong>—from finding coordinates to calculating slope to constructing the full y = mx + b equation. And despite the friction, PJ reached the top.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skill Ladder Section -->
+        <div class="section" id="section-ladder">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">🪜</span>
+                    <span>The Skill Ladder</span>
+                </div>
+                <div class="ladder-section">
+                    <div class="ladder-line"></div>
+                    
+                    <div class="ladder-rung">
+                        <span class="rung-number">1</span>
+                        <div class="rung-title">Coordinate Logic & Point Discovery</div>
+                        <div class="rung-content">
+                            <p>The foundation: <strong>A linear formula lets you find one coordinate if you have the other.</strong> Given a value for x, you can solve for y. This is the most basic relationship between equations and graphs.</p>
+                            
+                            <p>We started by explaining how the formula connects to the line on a graph. Then I assigned problems where PJ needed to substitute a given x-value and solve for y.</p>
+
+                            <div class="challenge-box">
+                                <h4>⚠️ The First Hurdle</h4>
+                                <p>PJ initially entered "over-analyzing mode." When asked to solve for variables, he seemed to overthink the task, trying to find complexity where there was simplicity. This is a pattern I've seen before—when uncertainty strikes, he adds layers of unnecessary logic instead of trusting the straightforward process.</p>
+                            </div>
+
+                            <div class="breakthrough-moment">
+                                <p><strong>The Breakthrough:</strong> After I clarified the objective—"You're just plugging in the x-value and solving for y"—PJ's mental fog cleared. He proceeded to solve the remaining problems independently and successfully. Once he understood what was being asked, execution became automatic.</p>
+                            </div>
+
+                            <strong>Status: Mastered after clarification.</strong>
+                        </div>
+                    </div>
+
+                    <div class="ladder-rung">
+                        <span class="rung-number">2</span>
+                        <div class="rung-title">The Slope Formula (m)</div>
+                        <div class="rung-content">
+                            <p>Rung 2 introduced <strong>slope</strong>—the rate of change of a line, calculated with the formula:</p>
+                            
+                            <div class="formula-badge">m = (y₂ - y₁) / (x₂ - x₁)</div>
+
+                            <p>This formula had been introduced in a previous session, so PJ had some familiarity. The goal today was to drill the mechanics until they became second nature.</p>
+
+                            <div class="challenge-box">
+                                <h4>🔧 Execution Errors</h4>
+                                <p>PJ demonstrated conceptual understanding but struggled with mechanical accuracy. Common errors included:</p>
+                                <p>• <strong>Mixing up coordinate pairs:</strong> Confusing y₁ with y₂, or mismatching x and y values from the same point.</p>
+                                <p>• <strong>Subtracting negative numbers incorrectly:</strong> Forgetting that subtracting a negative becomes addition (e.g., 5 - (-3) = 8).</p>
+                                <p>• <strong>Formula recall issues:</strong> Initially had trouble remembering which difference goes in the numerator versus the denominator.</p>
+                            </div>
+
+                            <p>We continued drilling problems until PJ reached a satisfactory level of accuracy. By the end of this rung, he could calculate slope reliably—though it required focused attention and double-checking his work.</p>
+
+                            <strong>Status: Functional competence achieved through repetition.</strong>
+                        </div>
+                    </div>
+
+                    <div class="ladder-rung">
+                        <span class="rung-number">3</span>
+                        <div class="rung-title">The y-intercept (b)</div>
+                        <div class="rung-content">
+                            <p>Rung 3 focused on defining <strong>b</strong>—the y-intercept. This is the specific point where the line crosses the y-axis, which occurs when x = 0.</p>
+
+                            <p>We used Desmos to visualize linear equations. I showed PJ how changing the value of b shifts the line up or down on the graph. A positive b moves the line upward. A negative b moves it downward. The slope (m) stays the same—only the vertical position changes.</p>
+
+                            <p>Then we moved to algebraic problems: given m and b, calculate y for a specific x-value. This is just substitution into the equation y = mx + b.</p>
+
+                            <div class="challenge-box">
+                                <h4>🧠 Mental Block Encountered</h4>
+                                <p>When asked to calculate y algebraically using the formula, PJ experienced a mental block. He seemed unsure how to proceed, even though the task was straightforward algebra—substituting values and solving.</p>
+                            </div>
+
+                            <div class="breakthrough-moment">
+                                <p><strong>The Breakthrough:</strong> Once I reframed the task as "simple algebra / solving for a variable," PJ's confusion dissolved. He recognized it as something he already knew how to do. From that point, he solved the problems with minimal guidance.</p>
+                            </div>
+
+                            <p>This rung reinforced an important insight: PJ sometimes needs tasks to be explicitly labeled or contextualized before he recognizes them as familiar territory. Once that connection is made, he executes confidently.</p>
+
+                            <strong>Status: Mastered after reframing.</strong>
+                        </div>
+                    </div>
+
+                    <div class="ladder-rung bonus-rung">
+                        <span class="rung-number">4</span>
+                        <div class="rung-title">Top Rung: Independent Assessment</div>
+                        <div class="rung-content">
+                            <p>The final rung was the real test: <strong>Could PJ synthesize everything independently, with zero tutor assistance?</strong></p>
+
+                            <p>I administered a 4-question test covering both major concepts:</p>
+                            <p>• <strong>2 slope problems:</strong> Calculate m using the formula (Δy / Δx).</p>
+                            <p>• <strong>2 linear equation problems:</strong> Use y = mx + b to solve for y.</p>
+
+                            <div class="highlight-box">
+                                <div class="big-number">100%</div>
+                                <div class="label">Completed Without Guidance</div>
+                            </div>
+
+                            <p>PJ completed the entire test independently. There was one temporary error—a mistake involving subtracting a negative number on a slope problem—but he caught it himself and self-corrected. Everything else? Correct on the first attempt.</p>
+
+                            <p style="background: rgba(255, 214, 10, 0.15); border-left: 4px solid #ffd60a; border-radius: 8px; padding: 20px; margin: 20px 0; font-style: italic;">This is the moment that matters. When the tutor steps back and the student still succeeds—that's when you know the learning has stuck.</p>
+
+                            <strong>Status: Aced. Complete mastery demonstrated.</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Insight Section -->
+        <div class="section" id="section-insight">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">💡</span>
+                    <span>The Critical Pattern</span>
+                </div>
+                <div class="card-content">
+                    <p>Today revealed a recurring pattern in how PJ learns: <strong>He overthinks when unsure, but executes flawlessly once clarity is established.</strong></p>
+
+                    <p>When faced with a new or ambiguous task, PJ's first instinct is to add complexity. He looks for hidden layers, advanced techniques, or tricky exceptions—even when the task is straightforward. This "over-analyzing mode" creates friction and slows him down unnecessarily.</p>
+
+                    <p>But here's the key insight: <strong>That friction disappears the moment he understands what's being asked.</strong> Once the objective is clear—once he recognizes the task as something familiar—PJ doesn't just proceed. He excels.</p>
+
+                    <p style="background: rgba(230, 126, 34, 0.15); border-left: 4px solid #f4a261; border-radius: 8px; padding: 20px; margin: 20px 0; font-style: italic;">The challenge isn't capability. It's calibration. PJ needs to learn to trust the simplicity of what's being asked rather than searching for complexity that isn't there.</p>
+
+                    <p>This isn't a fundamental learning issue—it's a confidence gap. And the fact that he can self-correct, adjust, and then succeed proves the foundation is solid.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Strategy Section -->
+        <div class="section" id="section-strategy">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">🎯</span>
+                    <span>Moving Forward</span>
+                </div>
+                <div class="card-content">
+                    <div class="strategy-box">
+                        <h3>The Path Ahead</h3>
+                        <p>PJ proved today that he can master linear equations when given the right structure and clarification. The test results confirm it—he's ready for more complex applications of these concepts.</p>
+
+                        <div class="action-item">
+                            <p><strong>Next Steps:</strong></p>
+                            <p>• Continue building fluency with slope calculations—especially with negative numbers and mixed coordinates.</p>
+                            <p>• Practice recognizing algebraic tasks quickly, without overthinking the process.</p>
+                            <p>• Apply linear equations to real-world scenarios—graphing, interpreting slopes, and solving practical problems.</p>
+                        </div>
+
+                        <div class="action-item">
+                            <p><strong>Long-Term Strategy:</strong></p>
+                            <p>PJ's ability to self-correct and push through confusion is a major strength. The goal now is to reduce the <em>time</em> it takes to reach clarity. The faster he recognizes familiar patterns, the more efficiently he'll work through new material.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary Section -->
+        <div class="section" id="section-summary">
+            <div class="card">
+                <div class="card-title">
+                    <span class="emoji">🏆</span>
+                    <span>The Big Picture</span>
+                </div>
+                <div class="card-content">
+                    <p>Today wasn't flawless. There were moments of confusion, mechanical errors, and mental blocks. But none of that matters as much as the final result: <strong>PJ climbed the ladder and reached the top.</strong></p>
+
+                    <p>He demonstrated understanding of coordinate relationships, slope calculations, and the y-intercept. He worked through confusion without giving up. And when it was time to prove his knowledge independently, he delivered—acing the test with only one minor, self-corrected error.</p>
+                    
+                    <p>This is what real learning looks like. Not perfection on the first try, but persistence until mastery is achieved.</p>
+
+                    <p style="background: rgba(255, 214, 10, 0.15); border-left: 4px solid #ffd60a; border-radius: 8px; padding: 20px; margin: 20px 0;">
+                        <strong>Keep pushing, PJ.</strong> You've proven you can handle the hard stuff when you trust the process. Linear equations? Conquered. Next challenge? You're ready.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Basketball Physics Engine
+        class Basketball {
+            constructor() {
+                this.element = document.createElement('div');
+                this.element.classList.add('basketball');
+                this.element.innerHTML = '🏀';
+                
+                this.size = Math.random() * 30 + 20;
+                this.element.style.fontSize = this.size + 'px';
+                
+                this.x = Math.random() * window.innerWidth;
+                this.y = Math.random() * window.innerHeight;
+                
+                this.vx = (Math.random() - 0.5) * 4;
+                this.vy = (Math.random() - 0.5) * 4;
+                
+                this.gravity = 0.2;
+                this.bounce = 0.7;
+                this.friction = 0.99;
+                
+                document.body.appendChild(this.element);
+                this.update();
+            }
+            
+            update() {
+                this.vy += this.gravity;
+                this.vx *= this.friction;
+                this.vy *= this.friction;
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                const margin = this.size;
+                
+                if (this.x <= margin) {
+                    this.x = margin;
+                    this.vx = Math.abs(this.vx) * this.bounce;
+                }
+                if (this.x >= window.innerWidth - margin) {
+                    this.x = window.innerWidth - margin;
+                    this.vx = -Math.abs(this.vx) * this.bounce;
+                }
+                if (this.y <= margin) {
+                    this.y = margin;
+                    this.vy = Math.abs(this.vy) * this.bounce;
+                }
+                if (this.y >= window.innerHeight - margin) {
+                    this.y = window.innerHeight - margin;
+                    this.vy = -Math.abs(this.vy) * this.bounce;
+                }
+                
+                this.element.style.left = this.x + 'px';
+                this.element.style.top = this.y + 'px';
+                
+                requestAnimationFrame(() => this.update());
+            }
+        }
+        
+        const basketballs = [];
+        for (let i = 0; i < 8; i++) {
+            setTimeout(() => {
+                basketballs.push(new Basketball());
+            }, i * 500);
+        }
+        
+        window.addEventListener('resize', () => {
+            basketballs.forEach(ball => {
+                if (ball.x > window.innerWidth) ball.x = window.innerWidth - ball.size;
+                if (ball.y > window.innerHeight) ball.y = window.innerHeight - ball.size;
+            });
+        });
+
+        const sectionAnchors = [
+            'section-header',
+            'section-overview',
+            'section-ladder',
+            'section-insight',
+            'section-strategy',
+            'section-summary'
+        ];
+
+        let currentSectionIndex = 0;
+        let isProgrammaticScroll = false;
+
+        const sections = document.querySelectorAll('.section');
+
+        const animationObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.2
+        });
+
+        const navigationObserver = new IntersectionObserver((entries) => {
+            if (isProgrammaticScroll) return;
+
+            entries.forEach(entry => {
+                if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+                    const id = entry.target.id;
+                    const index = sectionAnchors.indexOf(id);
+                    if (index > -1) {
+                        currentSectionIndex = index;
+                    }
+                }
+            });
+        }, {
+            threshold: 0.5
+        });
+
+        sections.forEach(section => {
+            animationObserver.observe(section);
+            navigationObserver.observe(section);
+        });
+
+        function scrollToSection(direction) {
+            if (direction === 'down') {
+                if (currentSectionIndex < sectionAnchors.length - 1) {
+                    currentSectionIndex++;
+                }
+            } else if (direction === 'up') {
+                if (currentSectionIndex > 0) {
+                    currentSectionIndex--;
+                }
+            }
+
+            const targetSection = document.getElementById(sectionAnchors[currentSectionIndex]);
+            if (targetSection) {
+                isProgrammaticScroll = true;
+
+                targetSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+
+                setTimeout(() => {
+                    isProgrammaticScroll = false;
+                }, 1000);
+            }
+        }
+
+        window.scrollTo(0, 0);
+    </script>
+</body>
+</html>

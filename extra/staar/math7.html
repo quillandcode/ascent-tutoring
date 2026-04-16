@@ -48,15 +48,37 @@
                     </tr>
                     <tr class="border-b border-blue-200/50 last:border-none">
                         <td class="py-3 pr-4 font-bold align-top whitespace-nowrap">4. Time Limit:</td>
-                        <td class="py-3 align-top">The standard STAAR limit is 4 hours. This 10-question practice is estimated to take 35 minutes. The timer at the top is set for 35 minutes so you can check your pace.</td>
+                        <td class="py-3 align-top">The standard STAAR limit is 4 hours. You can choose a 10-question (35 min) or 20-question (70 min) practice below.</td>
                     </tr>
                 </tbody>
             </table>
         </div>
         
-        <button onclick="startTest()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md transition duration-200 text-lg">
-            Start Practice Test
+        <div class="mb-8 w-full max-w-md">
+            <h4 class="text-lg font-semibold text-gray-700 mb-3">Select Practice Length:</h4>
+            <div class="flex justify-center space-x-6">
+                <label class="flex items-center space-x-2 cursor-pointer bg-white px-4 py-2 border border-gray-200 rounded-lg hover:bg-blue-50 transition">
+                    <input type="radio" name="numQuestions" value="10" class="w-5 h-5 text-blue-600">
+                    <span class="font-medium text-gray-800">10 Questions (35 min)</span>
+                </label>
+                <label class="flex items-center space-x-2 cursor-pointer bg-white px-4 py-2 border border-gray-200 rounded-lg hover:bg-blue-50 transition">
+                    <input type="radio" name="numQuestions" value="20" checked class="w-5 h-5 text-blue-600">
+                    <span class="font-medium text-gray-800">20 Questions (70 min)</span>
+                </label>
+            </div>
+        </div>
+
+        <button id="start-btn" onclick="startTest()" disabled class="bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md transition duration-200 text-lg opacity-50 cursor-not-allowed">
+            Loading Questions...
         </button>
+
+        <div id="error-msg" class="hidden mt-6 text-red-700 bg-red-50 p-4 rounded-lg border border-red-200 text-sm max-w-2xl text-left shadow-sm">
+            <strong class="flex items-center text-base mb-1">
+                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Error Loading Question Bank
+            </strong>
+            Could not fetch <code>questions.json</code>. If you opened this file directly from your computer (e.g., your URL starts with <code>file://</code>), your browser's security policies are blocking it. Please host this folder using a local web server like the <strong>VS Code "Live Server"</strong> extension.
+        </div>
     </div>
 
     <!-- Quiz Screen -->
@@ -69,7 +91,7 @@
             <div class="flex items-center space-x-2">
                 <span class="text-sm text-gray-500 uppercase font-bold tracking-wider">Time Left:</span>
                 <div id="timer" class="text-xl font-mono font-bold text-gray-800 bg-gray-50 px-4 py-2 rounded-md border border-gray-200 tracking-wider">
-                    00:35:00
+                    01:10:00
                 </div>
             </div>
         </div>
@@ -82,8 +104,13 @@
                     <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
                     <h3 class="text-lg font-bold">Strategy & Clues</h3>
                 </div>
-                <div id="hint-category" class="inline-block bg-amber-200 text-amber-900 text-xs px-2 py-1 rounded font-semibold uppercase tracking-wide mb-3">Category</div>
-                <p id="hint-text" class="text-gray-700 leading-relaxed text-sm md:text-base">Hints will appear here.</p>
+                <div class="flex justify-between items-center mb-3">
+                    <div id="hint-category" class="inline-block bg-amber-200 text-amber-900 text-xs px-2 py-1 rounded font-semibold uppercase tracking-wide">Category</div>
+                    <button id="toggle-hint-btn" onclick="toggleHint()" class="text-sm font-semibold text-amber-700 hover:text-amber-900 underline focus:outline-none transition">Show Hint</button>
+                </div>
+                <div id="hint-container" class="hidden mt-2">
+                    <p id="hint-text" class="text-gray-700 leading-relaxed text-sm md:text-base">Hints will appear here.</p>
+                </div>
             </div>
             
             <!-- Right Pane: Question & Answers -->
@@ -98,18 +125,24 @@
         </div>
         
         <!-- Controls -->
-        <div class="mt-6 pt-6 border-t-2 border-gray-100 flex justify-between items-center">
-            <button id="btn-prev" onclick="prevQuestion()" class="px-6 py-2 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition disabled:opacity-50 disabled:cursor-not-allowed">
-                &larr; Previous
+        <div class="mt-6 pt-6 border-t-2 border-gray-100 flex flex-wrap-reverse gap-4 justify-between items-center">
+            <button id="btn-end-early" onclick="submitTest(true)" class="px-6 py-2 border-2 border-red-200 text-red-600 font-semibold rounded-lg hover:bg-red-50 transition">
+                End Test Early
             </button>
             
-            <button id="btn-next" onclick="nextQuestion()" class="px-8 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 shadow-md transition">
-                Next &rarr;
-            </button>
-            
-            <button id="btn-submit" onclick="submitTest()" class="hidden px-8 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 shadow-md transition">
-                Submit Test
-            </button>
+            <div class="flex space-x-4 ml-auto">
+                <button id="btn-prev" onclick="prevQuestion()" class="px-6 py-2 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                    &larr; Previous
+                </button>
+                
+                <button id="btn-next" onclick="nextQuestion()" class="px-8 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 shadow-md transition">
+                    Next &rarr;
+                </button>
+                
+                <button id="btn-submit" onclick="submitTest(false)" class="hidden px-8 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 shadow-md transition">
+                    Submit Test
+                </button>
+            </div>
         </div>
     </div>
 
@@ -118,6 +151,13 @@
         <div class="text-center mb-8 border-b pb-8">
             <h1 class="text-4xl font-bold text-gray-800 mb-2">Test Complete!</h1>
             <p class="text-gray-500 mb-6">Here is how you did based on the 7th-grade math standards.</p>
+            
+            <div id="early-end-note" class="hidden mb-6 bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 rounded-lg inline-block max-w-2xl text-sm">
+                <strong>Note:</strong> You ended the test early. Only the questions you completed were graded. Unanswered questions were skipped.
+            </div>
+            
+            <br>
+            
             <div id="final-score" class="inline-block text-3xl font-black px-6 py-3 rounded-xl bg-blue-50 text-blue-700 border-2 border-blue-200">
                 Your Score: 
             </div>
@@ -137,158 +177,35 @@
 </div>
 
 <script>
-    // Full Question Bank (18 Questions - 3 per topic)
-    const fullQuestionBank = [
-        // --- TOPIC: PROBABILITY ---
-        {
-            category: "Probability",
-            question: "A bag contains 5 red marbles, 3 blue marbles, and 2 green marbles. If one marble is drawn at random, what is the probability that it is NOT blue?",
-            options: ["3/10", "7/10", "1/2", "1/5"],
-            answer: 1, 
-            hint: "Probability of an event = (Number of favorable outcomes) ÷ (Total number of outcomes).\n\n1. Find the total number of marbles.\n2. Count how many are NOT blue.\n3. Set up your fraction and simplify if needed."
-        },
-        {
-            category: "Probability",
-            question: "A spinner is divided into equal sections. During an experiment, it lands on red 15 times out of 50 spins. Based on this, how many times would you predict it to land on red if spun 200 times?",
-            options: ["30 times", "60 times", "15 times", "75 times"],
-            answer: 1, 
-            hint: "Set up a proportion using the experimental data:\n\n15 / 50 = x / 200\n\nHow many times does 50 go into 200? Multiply the top number (15) by that same amount!"
-        },
-        {
-            category: "Probability",
-            question: "What is the probability of flipping a coin and getting heads, AND rolling a standard 6-sided die and getting an even number?",
-            options: ["1/2", "1/4", "1/12", "1/8"],
-            answer: 1, 
-            hint: "Compound probability means you multiply the individual probabilities together.\n\n1. Probability of heads = 1/2\n2. Probability of an even number (2, 4, 6) = 3/6 (which simplifies to 1/2)\n\nMultiply those two fractions together."
-        },
-
-        // --- TOPIC: EQUATIONS & INEQUALITIES ---
-        {
-            category: "Equations",
-            question: "Solve the following equation for x: 3x - 12 = 15",
-            options: ["x = 1", "x = 9", "x = 27", "x = 4"],
-            answer: 1,
-            hint: "Isolate the variable using inverse operations.\n\n1. What is the opposite of subtracting 12? Do that to both sides first.\n2. You will be left with 3x = [a number].\n3. Divide by 3 to find x."
-        },
-        {
-            category: "Inequalities",
-            question: "Sarah needs to save at least $50 to buy a new game. She already has $14 and earns $6 an hour baby-sitting. Which inequality represents the number of hours (h) she needs to work?",
-            options: ["6h + 14 ≤ 50", "6h + 14 ≥ 50", "14h + 6 > 50", "6h - 14 ≥ 50"],
-            answer: 1,
-            hint: "Vocabulary check:\nWhat does 'at least' mean mathematically? It means that amount OR more. Look closely at the signs (≥ vs ≤).\n\nMake sure her starting amount ($14) is being ADDED to her total hourly earnings."
-        },
-        {
-            category: "Equations",
-            question: "Five less than twice a number is 17. What is the number?",
-            options: ["x = 6", "x = 11", "x = 22", "x = 8.5"],
-            answer: 1,
-            hint: "Translate the words into math:\n'Twice a number' = 2x\n'Five less than' = - 5\n'Is 17' = 17\n\nEquation: 2x - 5 = 17. Now solve for x using inverse operations!"
-        },
-
-        // --- TOPIC: PROPORTIONS & PERCENTS ---
-        {
-            category: "Proportions",
-            question: "A baker uses 4 cups of flour to make 3 batches of cookies. If she needs to make 15 batches of cookies for a bake sale, how many cups of flour will she need?",
-            options: ["12 cups", "20 cups", "15 cups", "60 cups"],
-            answer: 1,
-            hint: "Set up a proportion. Match your units on both sides of the equal sign (e.g., Flour/Batches = Flour/Batches).\n\n4 / 3 = x / 15.\nCross-multiply and divide to find the missing value."
-        },
-        {
-            category: "Percents",
-            question: "A pair of shoes originally costs $80. They are on sale for 25% off. What is the final price of the shoes before tax?",
-            options: ["$20", "$60", "$55", "$100"],
-            answer: 1,
-            hint: "Finding the discount means finding 25% of 80.\n\n1. Turn the percent into a decimal (0.25) or fraction (1/4).\n2. Multiply by the original price to find the money saved.\n3. Subtract the money saved from the original price!"
-        },
-        {
-            category: "Proportions",
-            question: "At a grocery store, 5 apples cost $3.50. At this rate, how much would 8 apples cost?",
-            options: ["$4.50", "$5.60", "$6.00", "$7.00"],
-            answer: 1,
-            hint: "Find the unit rate first. How much does ONE apple cost?\n\nDivide $3.50 by 5 to find the cost per apple. \nOnce you have the cost of one apple, multiply that by 8."
-        },
-
-        // --- TOPIC: GEOMETRY & SCALE ---
-        {
-            category: "Geometry",
-            question: "A circular garden has a diameter of 10 feet. What is the approximate area of the garden? (Use 3.14 for π)",
-            options: ["31.4 sq ft", "314 sq ft", "78.5 sq ft", "15.7 sq ft"],
-            answer: 2,
-            hint: "Area of a circle formula: A = πr²\n\nCareful! The problem gives you the DIAMETER (10). You need the RADIUS (r) for the formula.\nRadius is half of the diameter. Find the radius, square it, and multiply by 3.14."
-        },
-        {
-            category: "Proportions & Scale",
-            question: "On a map, 2 inches represents 50 miles. How many actual miles are represented by 5 inches on the map?",
-            options: ["100 miles", "125 miles", "150 miles", "250 miles"],
-            answer: 1,
-            hint: "Set up a scale proportion:\nInches / Miles = Inches / Miles\n\n2 / 50 = 5 / x\n\nYou can also find the unit rate: How many miles is 1 inch? Then multiply that by 5."
-        },
-        {
-            category: "Geometry",
-            question: "What is the volume of a rectangular prism with a length of 4 cm, a width of 5 cm, and a height of 10 cm?",
-            options: ["19 cubic cm", "40 cubic cm", "200 cubic cm", "100 cubic cm"],
-            answer: 2,
-            hint: "Volume of a rectangular prism formula: V = l × w × h\n\nMultiply the length, width, and height together."
-        },
-
-        // --- TOPIC: DATA ANALYSIS ---
-        {
-            category: "Data Analysis",
-            question: "A student scored 85, 90, 88, and 95 on four tests. What must they score on the fifth test to have an exact average (mean) of 90?",
-            options: ["90", "92", "88", "95"],
-            answer: 1,
-            hint: "To have an average of 90 across 5 tests, the TOTAL sum of all 5 tests must be 90 × 5 = 450.\n\nAdd up the 4 scores you already have, and subtract that sum from 450 to find the missing 5th score."
-        },
-        {
-            category: "Data Analysis",
-            question: "Find the median of the following set of data: 12, 15, 12, 18, 20.",
-            options: ["12", "15", "15.4", "18"],
-            answer: 1,
-            hint: "The median is the MIDDLE number, but ONLY when the numbers are put in order from least to greatest.\n\n1. Put the numbers in order first.\n2. Cross off one from each end until you reach the middle number."
-        },
-        {
-            category: "Data Analysis",
-            question: "What is the range of the following data set? 5, 8, 12, 15, 22",
-            options: ["22", "17", "13.5", "5"],
-            answer: 1,
-            hint: "Range is a measure of spread. It tells you how far apart the highest and lowest numbers are.\n\nFormula: Range = Maximum Value - Minimum Value."
-        },
-
-        // --- TOPIC: FINANCIAL LITERACY ---
-        {
-            category: "Financial Literacy / Vocab",
-            question: "Which of the following best describes the difference between simple interest and compound interest?",
-            options: [
-                "Simple interest is calculated on the principal and accumulated interest, while compound interest is only on the principal.",
-                "Simple interest is a fixed fee, while compound interest changes daily.",
-                "Simple interest is calculated only on the initial principal, while compound interest is calculated on the principal plus any previously earned interest.",
-                "There is no difference; they are just used by different types of banks."
-            ],
-            answer: 2,
-            hint: "Vocabulary check! Think about the word 'compound'. When something compounds, it builds upon itself. Which type of interest builds on the interest you've already earned?"
-        },
-        {
-            category: "Financial Literacy",
-            question: "A family's dinner bill is $45.00. They want to leave a 20% tip. What is the TOTAL cost of the dinner including the tip?",
-            options: ["$54.00", "$9.00", "$65.00", "$55.00"],
-            answer: 0,
-            hint: "First, calculate the tip.\n10% of $45 is $4.50. So, 20% would be double that.\n\nOnce you have the tip amount, don't forget the question asks for the TOTAL cost. Add the tip to the original bill."
-        },
-        {
-            category: "Financial Literacy",
-            question: "Marcus is calculating his net worth. He has $5,000 in a savings account and his car is worth $3,500. He owes $2,000 on a credit card. What is his net worth?",
-            options: ["$10,500", "$6,500", "$8,500", "$1,500"],
-            answer: 1,
-            hint: "Net Worth = Total Assets - Total Liabilities\n\nAssets are things you OWN that have value (savings, car).\nLiabilities are things you OWE (credit card debt).\n\nAdd up the assets, then subtract the liabilities."
-        }
-    ];
-
-    let testQuestions = []; // Will hold the 10 questions for the active test
+    let fullQuestionBank = [];
+    let testQuestions = []; // Will hold the 20 questions for the active test
     let currentQuestionIndex = 0;
     let selectedAnswers = [];
     let timerInterval;
-    let timeRemaining = 35 * 60; // 35 minutes in seconds
+    let timeRemaining = 70 * 60; // 70 minutes in seconds
     let isCountingUp = false;
+
+    // Fetch the JSON file on load
+    window.addEventListener('DOMContentLoaded', async () => {
+        const startBtn = document.getElementById('start-btn');
+        try {
+            const response = await fetch('./questions.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            fullQuestionBank = await response.json();
+            
+            // Enable the start button
+            startBtn.disabled = false;
+            startBtn.innerText = "Start Practice Test";
+            startBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            startBtn.classList.add('hover:bg-blue-700');
+        } catch (error) {
+            console.error("Could not load questions: ", error);
+            startBtn.innerText = "Error Loading Questions";
+            document.getElementById('error-msg').classList.remove('hidden');
+        }
+    });
 
     // Shuffle questions so it's a unique order every time
     function shuffleArray(array) {
@@ -299,12 +216,19 @@
     }
 
     function startTest() {
+        if (fullQuestionBank.length === 0) return; // Guard clause
+
+        // Get selected number of questions and calculate time
+        const numSelected = parseInt(document.querySelector('input[name="numQuestions"]:checked').value);
+        timeRemaining = numSelected === 10 ? 35 * 60 : 70 * 60;
+
         // Clone the full bank and shuffle it
         let shuffledBank = [...fullQuestionBank];
         shuffleArray(shuffledBank);
         
-        // Grab exactly 10 questions for this test session
-        testQuestions = shuffledBank.slice(0, 10);
+        // Grab exactly the chosen amount of questions
+        const numQuestions = Math.min(numSelected, shuffledBank.length);
+        testQuestions = shuffledBank.slice(0, numQuestions);
         selectedAnswers = new Array(testQuestions.length).fill(null);
         
         document.getElementById('intro-screen').classList.add('hidden');
@@ -359,6 +283,10 @@
         document.getElementById('hint-text').innerHTML = q.hint.replace(/\n/g, '<br>');
         document.getElementById('question-text').innerText = q.question;
         
+        // Reset hint visibility for the new question
+        document.getElementById('hint-container').classList.add('hidden');
+        document.getElementById('toggle-hint-btn').innerText = "Show Hint";
+
         let optionsHtml = '';
         q.options.forEach((opt, index) => {
             let isChecked = selectedAnswers[currentQuestionIndex] === index ? "checked" : "";
@@ -383,6 +311,20 @@
         }
     }
 
+    // Toggle hint visibility
+    function toggleHint() {
+        const hintContainer = document.getElementById('hint-container');
+        const toggleBtn = document.getElementById('toggle-hint-btn');
+        
+        if (hintContainer.classList.contains('hidden')) {
+            hintContainer.classList.remove('hidden');
+            toggleBtn.innerText = "Hide Hint";
+        } else {
+            hintContainer.classList.add('hidden');
+            toggleBtn.innerText = "Show Hint";
+        }
+    }
+
     // Re-render the options visually when one is selected
     function saveAnswer(index) {
         selectedAnswers[currentQuestionIndex] = index;
@@ -403,10 +345,14 @@
         }
     }
 
-    function submitTest() {
-        // Confirmation before submitting
+    function submitTest(endedEarly = false) {
         const unanswered = selectedAnswers.filter(a => a === null).length;
-        if(unanswered > 0) {
+        
+        if (endedEarly) {
+            if (!confirm(`Are you sure you want to end the test early? Only your answered questions will be graded.`)) {
+                return;
+            }
+        } else if (unanswered > 0) {
             if(!confirm(`You have ${unanswered} unanswered question(s). Are you sure you want to submit?`)) {
                 return;
             }
@@ -420,10 +366,18 @@
         document.getElementById('results-screen').classList.add('flex');
         
         let score = 0;
+        let attemptedCount = 0;
         let reviewHtml = '';
 
         testQuestions.forEach((q, index) => {
             let studentAnswer = selectedAnswers[index];
+            
+            // If ended early, completely skip unanswered questions
+            if (endedEarly && studentAnswer === null) {
+                return;
+            }
+
+            attemptedCount++;
             let isCorrect = studentAnswer === q.answer;
             if (isCorrect) score++;
 
@@ -448,8 +402,18 @@
             `;
         });
 
-        let percent = Math.round((score / testQuestions.length) * 100);
-        document.getElementById('final-score').innerText = `${percent}% (${score} / ${testQuestions.length})`;
+        // Show early end note if applicable
+        const earlyNote = document.getElementById('early-end-note');
+        if (endedEarly && unanswered > 0) {
+            earlyNote.classList.remove('hidden');
+            earlyNote.classList.add('inline-block');
+        } else {
+            earlyNote.classList.add('hidden');
+            earlyNote.classList.remove('inline-block');
+        }
+
+        let percent = attemptedCount > 0 ? Math.round((score / attemptedCount) * 100) : 0;
+        document.getElementById('final-score').innerText = attemptedCount > 0 ? `${percent}% (${score} / ${attemptedCount})` : `N/A (0 answered)`;
         
         // Color code final score
         const scoreEl = document.getElementById('final-score');

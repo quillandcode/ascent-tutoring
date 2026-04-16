@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7th Grade STAAR Math Practice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background-color: #f3f4f6; }
+        .pane-scroll { max-height: calc(100vh - 250px); overflow-y: auto; }
+        
+        /* Custom radio button styling */
+        input[type="radio"] {
+            width: 1.25rem;
+            height: 1.25rem;
+            accent-color: #2563eb;
+            margin-top: 0.1rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+<div id="app-container" class="w-full max-w-5xl bg-white rounded-xl shadow-lg overflow-hidden flex flex-col" style="min-height: 600px;">
+    
+    <!-- Introduction Screen -->
+    <div id="intro-screen" class="flex-1 flex flex-col items-center justify-center p-8 text-center">
+        <h1 class="text-3xl font-bold text-gray-800 mb-4">7th Grade Math STAAR Practice</h1>
+        <p class="text-gray-600 mb-8 max-w-2xl">Prepare yourself for the test with this simulated environment. This test includes a mix of math logic, equations, vocabulary, and word problems.</p>
+        
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 max-w-2xl text-left mb-8 shadow-sm">
+            <h3 class="text-xl font-semibold text-blue-800 mb-4 flex items-center">
+                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                Testing Strategies & Rules
+            </h3>
+            <table class="w-full text-gray-700">
+                <tbody>
+                    <tr class="border-b border-blue-200/50 last:border-none">
+                        <td class="py-3 pr-4 font-bold align-top whitespace-nowrap w-1/4">1. Use Scratch Paper:</td>
+                        <td class="py-3 align-top">Grab a blank piece of paper and a pencil right now.</td>
+                    </tr>
+                    <tr class="border-b border-blue-200/50 last:border-none">
+                        <td class="py-3 pr-4 font-bold align-top whitespace-nowrap">2. Write it Out:</td>
+                        <td class="py-3 align-top">Even if you are confident in your mental math, write out the steps to avoid simple errors.</td>
+                    </tr>
+                    <tr class="border-b border-blue-200/50 last:border-none">
+                        <td class="py-3 pr-4 font-bold align-top whitespace-nowrap">3. Review Your Work:</td>
+                        <td class="py-3 align-top">You can navigate back and forth between questions. Take your time and double-check your answers.</td>
+                    </tr>
+                    <tr class="border-b border-blue-200/50 last:border-none">
+                        <td class="py-3 pr-4 font-bold align-top whitespace-nowrap">4. Time Limit:</td>
+                        <td class="py-3 align-top">The standard STAAR limit is 4 hours. This 20-question practice is estimated to take 70 minutes. The timer at the top is set for 70 minutes so you can check your pace.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <button id="start-btn" onclick="startTest()" disabled class="bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg shadow-md transition duration-200 text-lg opacity-50 cursor-not-allowed">
+            Loading Questions...
+        </button>
+
+        <div id="error-msg" class="hidden mt-6 text-red-700 bg-red-50 p-4 rounded-lg border border-red-200 text-sm max-w-2xl text-left shadow-sm">
+            <strong class="flex items-center text-base mb-1">
+                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Error Loading Question Bank
+            </strong>
+            Could not fetch <code>questions.json</code>. If you opened this file directly from your computer (e.g., your URL starts with <code>file://</code>), your browser's security policies are blocking it. Please host this folder using a local web server like the <strong>VS Code "Live Server"</strong> extension.
+        </div>
+    </div>
+
+    <!-- Quiz Screen -->
+    <div id="quiz-screen" class="hidden flex-1 flex-col p-6">
+        <!-- Header -->
+        <div class="flex justify-between items-center border-b-2 border-gray-100 pb-4 mb-6">
+            <div id="question-tracker" class="text-lg font-semibold text-gray-700 bg-gray-100 px-4 py-2 rounded-md">
+                Question 1 of X
+            </div>
+            <div class="flex items-center space-x-2">
+                <span class="text-sm text-gray-500 uppercase font-bold tracking-wider">Time Left:</span>
+                <div id="timer" class="text-xl font-mono font-bold text-gray-800 bg-gray-50 px-4 py-2 rounded-md border border-gray-200 tracking-wider">
+                    01:10:00
+                </div>
+            </div>
+        </div>
+        
+        <!-- Two Pane View -->
+        <div class="flex flex-col md:flex-row gap-6 flex-1 min-h-0">
+            <!-- Left Pane: Hints & Strategy -->
+            <div class="w-full md:w-1/3 bg-amber-50 border-l-4 border-amber-400 p-6 rounded-r-lg pane-scroll shadow-inner">
+                <div class="flex items-center mb-4 text-amber-800">
+                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                    <h3 class="text-lg font-bold">Strategy & Clues</h3>
+                </div>
+                <div class="flex justify-between items-center mb-3">
+                    <div id="hint-category" class="inline-block bg-amber-200 text-amber-900 text-xs px-2 py-1 rounded font-semibold uppercase tracking-wide">Category</div>
+                    <button id="toggle-hint-btn" onclick="toggleHint()" class="text-sm font-semibold text-amber-700 hover:text-amber-900 underline focus:outline-none transition">Show Hint</button>
+                </div>
+                <div id="hint-container" class="hidden mt-2">
+                    <p id="hint-text" class="text-gray-700 leading-relaxed text-sm md:text-base">Hints will appear here.</p>
+                </div>
+            </div>
+            
+            <!-- Right Pane: Question & Answers -->
+            <div class="w-full md:w-2/3 flex flex-col pane-scroll pr-2">
+                <h2 id="question-text" class="text-xl md:text-2xl font-semibold text-gray-800 mb-6 leading-relaxed">
+                    Question goes here?
+                </h2>
+                <div id="options-container" class="space-y-3 flex-1">
+                    <!-- Options injected via JS -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Controls -->
+        <div class="mt-6 pt-6 border-t-2 border-gray-100 flex justify-between items-center">
+            <button id="btn-prev" onclick="prevQuestion()" class="px-6 py-2 border-2 border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-50 transition disabled:opacity-50 disabled:cursor-not-allowed">
+                &larr; Previous
+            </button>
+            
+            <button id="btn-next" onclick="nextQuestion()" class="px-8 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 shadow-md transition">
+                Next &rarr;
+            </button>
+            
+            <button id="btn-submit" onclick="submitTest()" class="hidden px-8 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 shadow-md transition">
+                Submit Test
+            </button>
+        </div>
+    </div>
+
+    <!-- Results Screen -->
+    <div id="results-screen" class="hidden flex-1 flex-col p-8">
+        <div class="text-center mb-8 border-b pb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Test Complete!</h1>
+            <p class="text-gray-500 mb-6">Here is how you did based on the 7th-grade math standards.</p>
+            <div id="final-score" class="inline-block text-3xl font-black px-6 py-3 rounded-xl bg-blue-50 text-blue-700 border-2 border-blue-200">
+                Your Score: 
+            </div>
+        </div>
+        
+        <h3 class="text-xl font-bold text-gray-800 mb-4">Detailed Review</h3>
+        <div id="review-container" class="space-y-4 mb-8 overflow-y-auto max-h-[50vh] pr-2">
+            <!-- Results injected via JS -->
+        </div>
+        
+        <div class="text-center">
+            <button onclick="location.reload()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md transition duration-200">
+                Take Another Practice Test
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let fullQuestionBank = [];
+    let testQuestions = []; // Will hold the 20 questions for the active test
+    let currentQuestionIndex = 0;
+    let selectedAnswers = [];
+    let timerInterval;
+    let timeRemaining = 70 * 60; // 70 minutes in seconds
+    let isCountingUp = false;
+
+    // Fetch the JSON file on load
+    window.addEventListener('DOMContentLoaded', async () => {
+        const startBtn = document.getElementById('start-btn');
+        try {
+            const response = await fetch('./questions.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            fullQuestionBank = await response.json();
+            
+            // Enable the start button
+            startBtn.disabled = false;
+            startBtn.innerText = "Start Practice Test";
+            startBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            startBtn.classList.add('hover:bg-blue-700');
+        } catch (error) {
+            console.error("Could not load questions: ", error);
+            startBtn.innerText = "Error Loading Questions";
+            document.getElementById('error-msg').classList.remove('hidden');
+        }
+    });
+
+    // Shuffle questions so it's a unique order every time
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function startTest() {
+        if (fullQuestionBank.length === 0) return; // Guard clause
+
+        // Clone the full bank and shuffle it
+        let shuffledBank = [...fullQuestionBank];
+        shuffleArray(shuffledBank);
+        
+        // Grab exactly 20 questions for this test session (or max available)
+        const numQuestions = Math.min(20, shuffledBank.length);
+        testQuestions = shuffledBank.slice(0, numQuestions);
+        selectedAnswers = new Array(testQuestions.length).fill(null);
+        
+        document.getElementById('intro-screen').classList.add('hidden');
+        document.getElementById('intro-screen').classList.remove('flex');
+        
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        document.getElementById('quiz-screen').classList.add('flex');
+        
+        startTimer();
+        loadQuestion();
+    }
+
+    function startTimer() {
+        const timerEl = document.getElementById('timer');
+        timerInterval = setInterval(() => {
+            if (!isCountingUp) {
+                timeRemaining--;
+                if (timeRemaining <= 0) {
+                    isCountingUp = true;
+                    timerEl.classList.remove('text-gray-800', 'bg-gray-50', 'border-gray-200');
+                    timerEl.classList.add('text-red-600', 'bg-red-50', 'border-red-200', 'animate-pulse');
+                }
+            } else {
+                timeRemaining++; // Count up if over time
+            }
+            updateTimerDisplay();
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        let absTime = Math.abs(timeRemaining);
+        let h = Math.floor(absTime / 3600);
+        let m = Math.floor((absTime % 3600) / 60);
+        let s = absTime % 60;
+        
+        let formatted = 
+            (h < 10 ? "0" + h : h) + ":" + 
+            (m < 10 ? "0" + m : m) + ":" + 
+            (s < 10 ? "0" + s : s);
+        
+        if (isCountingUp) formatted = "+" + formatted;
+        document.getElementById('timer').innerText = formatted;
+    }
+
+    function loadQuestion() {
+        const q = testQuestions[currentQuestionIndex];
+        
+        document.getElementById('question-tracker').innerText = `Question ${currentQuestionIndex + 1} of ${testQuestions.length}`;
+        document.getElementById('hint-category').innerText = q.category;
+        
+        // Convert plain text newlines to HTML breaks for formatting
+        document.getElementById('hint-text').innerHTML = q.hint.replace(/\n/g, '<br>');
+        document.getElementById('question-text').innerText = q.question;
+        
+        // Reset hint visibility for the new question
+        document.getElementById('hint-container').classList.add('hidden');
+        document.getElementById('toggle-hint-btn').innerText = "Show Hint";
+
+        let optionsHtml = '';
+        q.options.forEach((opt, index) => {
+            let isChecked = selectedAnswers[currentQuestionIndex] === index ? "checked" : "";
+            optionsHtml += `
+                <label class="flex items-start p-4 border rounded-lg cursor-pointer transition-colors duration-200 ${isChecked ? 'bg-blue-50 border-blue-400' : 'bg-white border-gray-200 hover:bg-gray-50'}">
+                    <input type="radio" name="option" value="${index}" ${isChecked} onchange="saveAnswer(${index})" class="mr-3">
+                    <span class="text-gray-700 text-lg">${opt}</span>
+                </label>
+            `;
+        });
+        document.getElementById('options-container').innerHTML = optionsHtml;
+
+        // Button states
+        document.getElementById('btn-prev').disabled = currentQuestionIndex === 0;
+        
+        if (currentQuestionIndex === testQuestions.length - 1) {
+            document.getElementById('btn-next').classList.add('hidden');
+            document.getElementById('btn-submit').classList.remove('hidden');
+        } else {
+            document.getElementById('btn-next').classList.remove('hidden');
+            document.getElementById('btn-submit').classList.add('hidden');
+        }
+    }
+
+    // Toggle hint visibility
+    function toggleHint() {
+        const hintContainer = document.getElementById('hint-container');
+        const toggleBtn = document.getElementById('toggle-hint-btn');
+        
+        if (hintContainer.classList.contains('hidden')) {
+            hintContainer.classList.remove('hidden');
+            toggleBtn.innerText = "Hide Hint";
+        } else {
+            hintContainer.classList.add('hidden');
+            toggleBtn.innerText = "Show Hint";
+        }
+    }
+
+    // Re-render the options visually when one is selected
+    function saveAnswer(index) {
+        selectedAnswers[currentQuestionIndex] = index;
+        loadQuestion(); // quick reload to update styling
+    }
+
+    function nextQuestion() {
+        if (currentQuestionIndex < testQuestions.length - 1) {
+            currentQuestionIndex++;
+            loadQuestion();
+        }
+    }
+
+    function prevQuestion() {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            loadQuestion();
+        }
+    }
+
+    function submitTest() {
+        // Confirmation before submitting
+        const unanswered = selectedAnswers.filter(a => a === null).length;
+        if(unanswered > 0) {
+            if(!confirm(`You have ${unanswered} unanswered question(s). Are you sure you want to submit?`)) {
+                return;
+            }
+        }
+
+        clearInterval(timerInterval);
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('flex');
+        
+        document.getElementById('results-screen').classList.remove('hidden');
+        document.getElementById('results-screen').classList.add('flex');
+        
+        let score = 0;
+        let reviewHtml = '';
+
+        testQuestions.forEach((q, index) => {
+            let studentAnswer = selectedAnswers[index];
+            let isCorrect = studentAnswer === q.answer;
+            if (isCorrect) score++;
+
+            let studentAnswerText = studentAnswer !== null ? q.options[studentAnswer] : "<em class='text-gray-400'>Did not answer</em>";
+            let correctAnswerText = q.options[q.answer];
+
+            reviewHtml += `
+                <div class="p-4 border rounded-lg ${isCorrect ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}">
+                    <p class="font-semibold text-gray-800 mb-2">Q${index + 1}: ${q.question}</p>
+                    <div class="text-sm">
+                        <p class="mb-1">
+                            <span class="text-gray-600">Your answer:</span> 
+                            <span class="${isCorrect ? 'text-green-700 font-bold' : 'text-red-600 font-bold'}">${studentAnswerText}</span>
+                        </p>
+                        ${!isCorrect ? `
+                        <p>
+                            <span class="text-gray-600">Correct answer:</span> 
+                            <span class="text-green-700 font-bold">${correctAnswerText}</span>
+                        </p>` : ''}
+                    </div>
+                </div>
+            `;
+        });
+
+        let percent = Math.round((score / testQuestions.length) * 100);
+        document.getElementById('final-score').innerText = `${percent}% (${score} / ${testQuestions.length})`;
+        
+        // Color code final score
+        const scoreEl = document.getElementById('final-score');
+        scoreEl.className = 'inline-block text-3xl font-black px-6 py-3 rounded-xl border-2';
+        if (percent >= 80) {
+            scoreEl.classList.add('bg-green-50', 'text-green-700', 'border-green-200');
+        } else if (percent >= 60) {
+            scoreEl.classList.add('bg-yellow-50', 'text-yellow-700', 'border-yellow-200');
+        } else {
+            scoreEl.classList.add('bg-red-50', 'text-red-700', 'border-red-200');
+        }
+
+        document.getElementById('review-container').innerHTML = reviewHtml;
+    }
+</script>
+
+</body>
+</html>
